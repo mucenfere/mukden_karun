@@ -32,7 +32,7 @@
   }
 );
 
-  satellite.addTo(Map);
+  satellite.addTo(map);
 
   async function loadGeoJSON(url, options = {}) {
     const res = await fetch(url);
@@ -55,13 +55,14 @@
       pointToLayer: (f, latlng) => L.circleMarker(latlng, { radius: 5, weight: 2, fillOpacity: 0.7 })
     });
 
-    admin.addTo(leafletmap);
-    cities.addTo(leafletmap);
+    admin.addTo(map);
+    cities.addTo(map);
+    roads.addTo(map);
 
-    const baseLayers = { "OSM": osm };
+    const baseLayers = { "위성": satellite, "OSM": osm };
     const overlays = { "행정/경계": admin, "교통로": roads, "도시": cities };
 
-    L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(leafletmap);
+    L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
   })();
 </script>
 </body>
