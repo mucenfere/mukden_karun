@@ -10,8 +10,6 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-groupedlayercontrol/0.6.1/leaflet.groupedlayercontrol.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-groupedlayercontrol/0.6.1/leaflet.groupedlayercontrol.min.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-polylinedecorator/1.6.0/leaflet.polylineDecorator.min.js"></script>
   
   <style>
     html, body { height: 100%; margin: 0; }
@@ -115,29 +113,6 @@
 });
     const roads = await loadGeoJSON('./data/roads.geojson', { style: { weight: 3 }});
     const wpkangxi = await loadGeoJSON('./data/willowpalisade-kangxi.geojson', { style: wallStyle });
-wpkangxi.addTo(map);
-
-const sleeperIcon = L.divIcon({
-  className: 'sleeper-icon',
-  html: '<div class="sleeper-bar"></div>',
-  iconSize: [10, 10],
-  iconAnchor: [5, 5]
-});
-
-const railDecorator_kangxi = L.polylineDecorator(wpkangxi, {
-  patterns: [
-    {
-      repeat: 14,
-      offset: 0,
-      symbol: L.Symbol.marker({
-        rotate: true,
-        markerOptions: {
-          icon: sleeperIcon
-        }
-      })
-    }
-  ]
-}).addTo(map);
     const wpqianlong = await loadGeoJSON('./data/willowpalisade-qianlong.geojson', { style: wallStyle });
     const cities = await loadGeoJSON('./data/cities.geojson', {
       pointToLayer: (f, latlng) => L.circleMarker(latlng, { radius: 5, weight: 2, fillOpacity: 0.7 })
