@@ -1,0 +1,13 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "예시 구역" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[123.2,41.6],[123.8,41.6],[123.8,42.1],[123.2,42.1],[123.2,41.6]]]
+      }
+    }
+  ]
+}
