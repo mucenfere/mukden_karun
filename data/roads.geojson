@@ -1,0 +1,13 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "예시 교통로" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[123.25,41.7],[123.45,41.8],[123.7,41.95]]
+      }
+    }
+  ]
+}
