@@ -8,8 +8,8 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.groupedlayercontrol@0.6.1/dist/leaflet.groupedlayercontrol.min.css" />
-  <script src="https://unpkg.com/leaflet.groupedlayercontrol@0.6.1/dist/leaflet.groupedlayercontrol.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css" />
+  <script src="https://unpkg.com/leaflet.groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js"></script>
   
   <style>
     html, body { height: 100%; margin: 0; }
@@ -128,7 +128,7 @@
         "도시": cities
       }
     };
-
+console.log("groupedLayers exists?", typeof L.control.groupedLayers);
 L.control.groupedLayers(baseLayers, groupedOverlays, { collapsed: false }).addTo(map);
   })().catch(err => { console.error(err); alert(err.message || err); });
 </script>
