@@ -55,6 +55,7 @@
 
   (async () => {
     const admin = await loadGeoJSON('./data/admin.geojson', { style: { weight: 2, fillOpacity: 0.1 }});
+    const chgispgn = await loadGeoJSON('./data/v6_1820_prov_pgn.geojson', { style: { weight: 2, fillOpacity: 0.1 }});
     const roads = await loadGeoJSON('./data/roads.geojson', { style: { weight: 3 }});
     const cities = await loadGeoJSON('./data/cities.geojson', {
       pointToLayer: (f, latlng) => L.circleMarker(latlng, { radius: 5, weight: 2, fillOpacity: 0.7 })
@@ -65,7 +66,7 @@
     roads.addTo(map);
 
     const baseLayers = { "위성": satellite, "OSM": osm };
-    const overlays = { "행정/경계": admin, "교통로": roads, "도시": cities };
+    const overlays = { "省 경계선(1820_CHGIS)": chgispgn, "행정/경계": admin, "교통로": roads, "도시": cities };
 
     L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
   })();
