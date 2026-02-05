@@ -110,25 +110,26 @@
     roads.addTo(map);
 
     const baseLayers = { "위성": satellite, "OSM": osm };
-    const groupedOverlays = {
-  "유조변": {
-    "유조변(강희-옹정)": wpkangxi,
-    "유조변(건륭)": wpqianlong
-  },
-  "참고자료_CHGIS (1820)": {
-    "省 경계선(1820_CHGIS)": chgisprov_pgn,
-    "府 경계선(1820_CHGIS)": chgispref_pgn,
-    "府 치소(1820_CHGIS)": chgispref_pts,
-    "지명(1820_CHGIS)": chgistwn_pts
-  },
-  "기타": {
-    "행정/경계": admin,
-    "교통로": roads,
-    "도시": cities
-  }
-};
 
-    L.control.groupedLayers(baseLayers, groupedOverlays, { collapsed: false }).addTo(map);
+    const groupedOverlays = {
+      "유조변": {
+        "유조변(강희-옹정)": wpkangxi,
+        "유조변(건륭)": wpqianlong
+      },
+      "참고자료_CHGIS (1820)": {
+        "省 경계선(1820_CHGIS)": chgisprov_pgn,
+        "府 경계선(1820_CHGIS)": chgispref_pgn,
+        "府 치소(1820_CHGIS)": chgispref_pts,
+        "지명(1820_CHGIS)": chgistwn_pts
+      },
+      "기타": {
+        "행정/경계": admin,
+        "교통로": roads,
+        "도시": cities
+      }
+    };
+
+L.control.groupedLayers(baseLayers, groupedOverlays, { collapsed: false }).addTo(map);
   })();
 </script>
 </body>
