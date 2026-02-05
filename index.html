@@ -56,6 +56,12 @@
   satellite.addTo(map);
   labels.addTo(map); 
 
+  const wallStyle = {
+  color: '#d60000',
+  weight: 6,
+  opacity: 0.9
+};
+  
   async function loadGeoJSON(url, options = {}) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Failed to fetch ${url} (HTTP ${res.status})`);
@@ -99,8 +105,8 @@
   })
 });
     const roads = await loadGeoJSON('./data/roads.geojson', { style: { weight: 3 }});
-    const wpkangxi = await loadGeoJSON('./data/willowpalisade-kangxi.geojson', { style: { weight: 3 }});
-    const wpqianlong = await loadGeoJSON('./data/willowpalisade-qianlong.geojson', { style: { weight: 3 }});
+    const wpkangxi = await loadGeoJSON('./data/willowpalisade-kangxi.geojson', { style: wallStyle });
+    const wpqianlong = await loadGeoJSON('./data/willowpalisade-qianlong.geojson', { style: wallStyle });
     const cities = await loadGeoJSON('./data/cities.geojson', {
       pointToLayer: (f, latlng) => L.circleMarker(latlng, { radius: 5, weight: 2, fillOpacity: 0.7 })
     });
