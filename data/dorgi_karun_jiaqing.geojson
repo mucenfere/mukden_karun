@@ -1,0 +1,10 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "예시 도시" },
+      "geometry": { "type": "Point", "coordinates": [123.45, 41.8] }
+    }
+  ]
+}
