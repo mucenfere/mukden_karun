@@ -277,7 +277,7 @@ function collapseGroupByName(groupName) {
     const btn = nameEl?.querySelector('.group-fold-btn');
     if (!nameEl || !btn) return;
 
-    const groupLabel = (nameEl.childNodes[0]?.textContent || nameEl.textContent || "").trim();
+    const groupLabel = (nameEl.textContent || "").replace(/[▾▸]/g, "").trim();
     if (groupLabel !== groupName) return;
 
     groupEl.classList.add('is-collapsed');
@@ -292,11 +292,39 @@ function collapseGroupByName(groupName) {
     if (listEl) listEl.style.display = 'none';
   });
 }
+function attachGroupFoldButtons() {
+  const groupEls = document.querySelectorAll('.leaflet-control-layers-group');
 
+  groupEls.forEach(groupEl => {
+    const nameEl = groupEl.querySelector('.leaflet-control-layers-group-name');
+    if (!nameEl) return;
+    if (nameEl.querySelector('.group-fold-btn')) return;
+    const listEl =
+      groupEl.querySelector('.leaflet-control-layers-group-list') ||
+      groupEl.querySelector('.leaflet-control-layers-group-items') ||
+      groupEl.querySelector('.leaflet-control-layers-group-layers') ||
+      nameEl.nextElementSibling;
+
+    const btn = document.createElement('span');
+    btn.className = 'group-fold-btn';
+    btn.textContent = '▾';
+
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const collapsed = groupEl.classList.toggle('is-collapsed');
+      btn.textContent = collapsed ? '▸' : '▾';
+
+      if (listEl) listEl.style.display = collapsed ? 'none' : '';
+    });
+    nameEl.appendChild(btn);
+  });
+}
 setTimeout(() => {
   attachGroupFoldButtons();
   ["참고자료_CHGIS (1820)"].forEach(collapseGroupByName);
-}, 0);
+}, 50);
   })().catch(err => { console.error(err); alert(err.message || err); });
 </script>
 </body>
