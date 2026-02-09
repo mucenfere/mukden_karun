@@ -4,19 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mukden's Karun map</title>
-
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-groupedlayercontrol/0.6.1/leaflet.groupedlayercontrol.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-groupedlayercontrol/0.6.1/leaflet.groupedlayercontrol.min.js"></script>
-
   <link rel="stylesheet" href="./css/site.css" />
 
   <style>
     html, body { height: 100%; margin: 0; overflow: hidden; }
-
-    /* Top nav */
     .topnav{
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -30,14 +25,10 @@
       border-bottom: 1px solid #ddd;
     }
     .topnav a{ text-decoration:none; color:#111; font-weight:600; }
-
-    /* Map fills rest of viewport */
     #map{
       height: calc(100% - 44px);
       margin-top: 44px;
     }
-
-    /* Tooltip labels */
     .leaflet-tooltip.plain-label{
       background: transparent;
       border: none;
@@ -50,8 +41,6 @@
       text-shadow: 0 0 2px #fff, 0 0 2px #fff;
     }
     .leaflet-tooltip.plain-label:before{ display: none !important; }
-
-    /* Make layers control scroll internally (not whole page) */
     .leaflet-control-layers{
       max-height: calc(100vh - 60px);
       overflow: hidden;
@@ -62,8 +51,6 @@
       overflow-x: hidden;
       padding-right: 6px;
     }
-
-    /* Group header */
     .leaflet-control-layers-group-name{
       cursor: default;
       font-weight: 800;
@@ -73,50 +60,36 @@
       align-items: center;
       gap: 6px;
     }
-
     .leaflet-control-layers-group-name::before{
       content: "" !important;
       display: none !important;
     }
 
+    /* Our fold button */
     .group-fold-btn{
       margin-left: auto;
+      appearance: none;
+      border: 1px solid #ccc;
+      background: rgba(255,255,255,0.9);
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      line-height: 1;
+      padding: 0;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 18px;
-      height: 18px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      background: rgba(255,255,255,0.9);
-      cursor: pointer;
-      user-select: none;
-      font-size: 12px;
-      line-height: 1;
     }
     .group-fold-btn:hover{ background: #f0f0f0; }
-
-
-    .leaflet-control-layers-group.is-collapsed label{
+    .leaflet-control-layers-group.is-collapsed > .leaflet-control-layers-group-list{
       display: none !important;
     }
-
-    .leaflet-control-layers-group.is-collapsed .leaflet-control-layers-group-name{
-      display: flex !important;
+    .leaflet-control-layers-group.is-collapsed > .leaflet-control-layers-group-items,
+    .leaflet-control-layers-group.is-collapsed > .leaflet-control-layers-group-layers{
+      display: none !important;
     }
-    .group-fold-btn{
-  margin-left: auto;
-  appearance: none;
-  border: 1px solid #ccc;
-  background: rgba(255,255,255,0.9);
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  line-height: 1;
-  padding: 0;
-}
   </style>
 </head>
 <body>
@@ -133,7 +106,6 @@
   <script>
     const map = L.map('map').setView([42, 126], 7);
 
-    // Basemaps
     const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; OpenStreetMap contributors'
@@ -156,7 +128,6 @@
       "OSM": osm
     };
 
-    // Styles
     const willowpalisade = { color: '#d60000', weight: 2, opacity: 1 };
 
     async function loadGeoJSON(url, options = {}) {
@@ -187,43 +158,7 @@
       });
     }
 
-function attachGroupFoldButtons() {
-  const container = layerCtl.getContainer();
-  if (!container) return;
-
-  const groupEls = container.querySelectorAll('.leaflet-control-layers-group');
-
-  groupEls.forEach(groupEl => {
-    const nameEl = groupEl.querySelector('.leaflet-control-layers-group-name');
-    if (!nameEl) return;
-    if (nameEl.querySelector('.group-fold-btn')) return;
-
-    const listEl =
-      nameEl.nextElementSibling ||
-      groupEl.querySelector('.leaflet-control-layers-group-list') ||
-      groupEl.querySelector('.leaflet-control-layers-group-items') ||
-      groupEl.querySelector('.leaflet-control-layers-group-layers');
-
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'group-fold-btn';
-    btn.textContent = '▾';
-
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      const collapsed = groupEl.classList.toggle('is-collapsed');
-      btn.textContent = collapsed ? '▸' : '▾';
-
-      if (listEl) listEl.style.display = collapsed ? 'none' : '';
-    });
-
-    nameEl.appendChild(btn);
-  });
-}
-
-    function collapseGroupsOnStart(layerCtl, groupNames) {
+    function attachGroupFoldButtons(layerCtl) {
       const container = layerCtl.getContainer();
       if (!container) return;
 
@@ -232,7 +167,33 @@ function attachGroupFoldButtons() {
       groupEls.forEach(groupEl => {
         const nameEl = groupEl.querySelector('.leaflet-control-layers-group-name');
         if (!nameEl) return;
+        if (nameEl.querySelector('.group-fold-btn')) return;
 
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'group-fold-btn';
+        btn.textContent = '▾';
+
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const collapsed = groupEl.classList.toggle('is-collapsed');
+          btn.textContent = collapsed ? '▸' : '▾';
+        });
+
+        nameEl.appendChild(btn);
+      });
+    }
+
+    function collapseGroupsOnStart(layerCtl, groupNames) {
+      const container = layerCtl.getContainer();
+      if (!container) return;
+
+      container.querySelectorAll('.leaflet-control-layers-group').forEach(groupEl => {
+        const nameEl = groupEl.querySelector('.leaflet-control-layers-group-name');
+        if (!nameEl) return;
+        
         const label = (nameEl.textContent || "").replace(/[▾▸]/g, "").trim();
         if (!groupNames.includes(label)) return;
 
@@ -271,8 +232,10 @@ function attachGroupFoldButtons() {
         style: { color: '#000000', weight: 4, opacity: 0.8 }
       });
       admin_v1.addTo(map);
+
       const wpkangxi = await loadGeoJSON('./data/willowpalisade-kangxi.geojson', { style: willowpalisade });
       const wpqianlong = await loadGeoJSON('./data/willowpalisade-qianlong.geojson', { style: willowpalisade });
+
       const groupedOverlays = {
         "기타": {
           "성경장군 관할 경계선": admin_v1
@@ -304,7 +267,7 @@ function attachGroupFoldButtons() {
           "지명(1820_CHGIS)": chgistwn_pts
         }
       };
-
+      
       const layerCtl = L.control.groupedLayers(baseLayers, groupedOverlays, {
         collapsed: false,
         groupsCollapsible: false,
@@ -314,7 +277,7 @@ function attachGroupFoldButtons() {
       setTimeout(() => {
         attachGroupFoldButtons(layerCtl);
         collapseGroupsOnStart(layerCtl, ["참고자료_CHGIS (1820)"]);
-      }, 150);
+      }, 200);
 
     })().catch(err => {
       console.error(err);
