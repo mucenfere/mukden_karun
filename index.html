@@ -178,6 +178,11 @@
 
   <script>
     const map = L.map('map').setView([42, 126], 7);
+    map.on('click', () => {
+    highlightLayer(null);
+    closeInfoPanel();
+    });
+    
     const mkDivIcon = (className, size) => L.divIcon({
   className: '',
   html: `<div class="${className}"></div>`,
@@ -205,6 +210,36 @@ function escapeHtml(s){
   return String(s ?? '').replace(/[&<>"']/g, (m)=>({
     '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
   }[m]));
+}
+
+// 선택 강조 관리
+let selectedLayer = null;
+let selectedOriginalStyle = null;
+
+function highlightLayer(layer) {
+  if (selectedLayer) {
+    if (selectedOriginalStyle) {
+      selectedLayer.setStyle(selectedOriginalStyle);
+    }
+    selectedLayer = null;
+    selectedOriginalStyle = null;
+  }
+  if (!layer) return;
+  if (typeof layer.setStyle !== 'function') return;
+  selectedOriginalStyle = {
+    color: layer.options.color,
+    weight: layer.options.weight,
+    opacity: layer.options.opacity,
+    fillOpacity: layer.options.fillOpacity,
+  };
+  selectedLayer = layer;
+  layer.setStyle({
+    color: '#ffff00',
+    weight: 4,
+    opacity: 1,
+    fillOpacity: 0.4,
+  });
+  layer.bringToFront();
 }
 
 function openInfoPanel(title, props){
@@ -269,8 +304,10 @@ async function loadGeoJSON(url, options = {}) {
           className: 'plain-label'
         });
       }
-
-      layer.on('click', () => openInfoPanel(labelText, p));
+layer.on('click', () => {
+  highlightLayer(layer);
+  openInfoPanel(labelText, p);
+});
     }
   });
 }
@@ -372,7 +409,10 @@ function makeKarunLayer(gj, { time, ztype, color }) {
       });
 
       if (typeof openInfoPanel === 'function') {
-        layer.on('click', () => openInfoPanel(labelText, p));
+     layer.on('click', () => {
+      highlightLayer(layer);
+      openInfoPanel(labelText, p);
+    });
       }
     }
   });
