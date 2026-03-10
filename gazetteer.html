@@ -4,9 +4,19 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gazetteer(地名目錄)</title>
-  <link rel="stylesheet" href="./css/site.css" />
   <style>
-    .topnav{
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: #f8f8f6;
+      color: #111;
+    }
+
+    /* ── Top nav ── */
+    .topnav {
       position: fixed;
       top: 0; left: 0; right: 0;
       height: 44px;
@@ -18,31 +28,530 @@
       z-index: 1000;
       border-bottom: 1px solid #ddd;
     }
-    .topnav a:hover{ text-decoration: underline; }
+    .topnav a {
+      text-decoration: none;
+      color: #111;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .topnav a:hover { text-decoration: underline; }
 
-    body{
-      margin: 0;
-      padding-top: 44px;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    /* ── Layout ── */
+    body { padding-top: 44px; }
+    main { max-width: 900px; margin: 0 auto; padding: 28px 20px 60px; }
+
+    h1 { font-size: 22px; font-weight: 800; margin: 0 0 6px; }
+    .subtitle { color: #666; font-size: 13px; margin-bottom: 24px; }
+
+    /* ── Auth bar ── */
+    .auth-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      padding: 10px 14px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .auth-bar input {
+      flex: 1;
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: monospace;
+    }
+    .auth-bar button {
+      padding: 6px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      background: #111;
+      color: #fff;
+    }
+    .auth-status { font-size: 12px; color: #888; }
+    .auth-status.ok { color: #2a9d2a; }
+    .auth-status.fail { color: #c0392b; }
+
+    /* ── Toolbar ── */
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .toolbar input[type=search] {
+      flex: 1;
+      min-width: 180px;
+      padding: 7px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+    .btn-add {
+      padding: 7px 16px;
+      background: #1a73e8;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-add:disabled { background: #aaa; cursor: default; }
+
+    /* ── Table ── */
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 13px;
+    }
+    thead th {
+      background: #f0f0ee;
+      text-align: left;
+      padding: 10px 12px;
+      font-weight: 700;
+      border-bottom: 1px solid #ddd;
+      white-space: nowrap;
+    }
+    tbody tr { border-bottom: 1px solid #f0f0ee; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #fafaf8; }
+    td { padding: 9px 12px; vertical-align: top; }
+    td.name { font-weight: 600; }
+    td.hanja { font-size: 14px; }
+    td.manchu { font-family: monospace; color: #444; }
+    td.desc { color: #555; max-width: 320px; }
+    td.actions { white-space: nowrap; }
+
+    .btn-edit, .btn-del {
+      padding: 3px 10px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      margin-right: 4px;
+    }
+    .btn-edit { background: #e8f0fe; color: #1a73e8; }
+    .btn-edit:hover { background: #c5d8fc; }
+    .btn-del  { background: #fce8e6; color: #c0392b; }
+    .btn-del:hover  { background: #f5c0bb; }
+
+    .empty-row td { text-align: center; color: #999; padding: 32px; }
+
+    /* ── Modal ── */
+    .modal-backdrop {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 10px;
+      padding: 24px 28px;
+      width: 480px;
+      max-width: calc(100vw - 32px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    }
+    .modal h2 { margin: 0 0 18px; font-size: 17px; font-weight: 800; }
+    .modal label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #555;
+      margin-bottom: 4px;
+      margin-top: 12px;
+    }
+    .modal label:first-of-type { margin-top: 0; }
+    .modal input, .modal textarea {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+    }
+    .modal textarea { height: 80px; resize: vertical; }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .btn-cancel {
+      padding: 7px 16px;
+      border: 1px solid #ccc;
+      background: #fff;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .btn-save {
+      padding: 7px 18px;
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-save:disabled { background: #aaa; cursor: default; }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      bottom: 28px; left: 50%;
+      transform: translateX(-50%) translateY(60px);
+      background: #222;
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 20px;
+      font-size: 13px;
+      opacity: 0;
+      transition: opacity 0.25s, transform 0.25s;
+      z-index: 3000;
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
 
-    main{ padding: 16px; }
+    /* ── Loading ── */
+    .loading { text-align: center; padding: 40px; color: #999; font-size: 14px; }
   </style>
 </head>
 <body>
-
   <nav class="topnav">
     <a href="https://mucenfere.github.io/">Home</a>
     <a href="./index.html">Map</a>
     <a href="./gazetteer.html">Gazetteer</a>
     <a href="./reference.html">Reference</a>
-    <a href="./log.html">Work Log</a>
+    <a href="./lop.html">Work Log</a>
   </nav>
 
   <main>
-    <h1>Gazetteer(地名目錄)</h1>
-    <p>내용을 입력하세요.</p>
+    <h1>Gazetteer <span style="font-weight:400;color:#888">地名目錄</span></h1>
+    <p class="subtitle">성경 지역 카룬 지명 목록과 위치 비정의 근거 자료.</p>
+
+    <!-- Auth -->
+    <div class="auth-bar">
+      <span style="white-space:nowrap;font-weight:600;">🔑 편집 모드</span>
+      <input type="password" id="tokenInput" placeholder="GitHub Personal Access Token" autocomplete="off" />
+      <button id="tokenBtn">확인</button>
+      <span id="authStatus" class="auth-status">미인증 — 읽기 전용</span>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <input type="search" id="searchInput" placeholder="지명·한자·만주어 검색…" />
+      <button class="btn-add" id="addBtn" disabled>+ 항목 추가</button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <table id="mainTable">
+        <thead>
+          <tr>
+            <th>지명_한자</th>
+            <th>지명_만주어</th>
+            <th>설명</th>
+            <th id="actionsHeader" style="display:none">작업</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr class="empty-row"><td colspan="5">불러오는 중…</td></tr>
+        </tbody>
+      </table>
+    </div>
   </main>
 
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <h2 id="modalTitle">항목 추가</h2>
+      <label>지명_한자 漢字</label>
+      <input type="text" id="fHanja" placeholder="예: 鳳凰城" />
+      <label>지명_만주어 Manju gisun</label>
+      <input type="text" id="fManchu" placeholder="예: Fiyanggu hoton" />
+      <label>설명</label>
+      <textarea id="fDesc" placeholder="위치 비정 근거, 사료 출처, 관련 카룬 등"></textarea>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="modalCancel">취소</button>
+        <button class="btn-save" id="modalSave">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+  (() => {
+    const REPO  = 'mucenfere/mukden_karun';
+    const PATH  = 'data/mukden_karun_gazetteer.json';
+    const BRANCH = 'main';
+
+    let token   = '';
+    let entries = [];   // [{id, name, hanja, manchu, desc}, ...]
+    let fileSha = '';   // GitHub blob SHA (needed for updates)
+    let editingId = null;
+    let authed  = false;
+
+    // ── Elements ──
+    const tokenInput   = document.getElementById('tokenInput');
+    const tokenBtn     = document.getElementById('tokenBtn');
+    const authStatus   = document.getElementById('authStatus');
+    const addBtn       = document.getElementById('addBtn');
+    const searchInput  = document.getElementById('searchInput');
+    const tableBody    = document.getElementById('tableBody');
+    const actionsHeader= document.getElementById('actionsHeader');
+    const modalBackdrop= document.getElementById('modalBackdrop');
+    const modalTitle   = document.getElementById('modalTitle');
+    const modalCancel  = document.getElementById('modalCancel');
+    const modalSave    = document.getElementById('modalSave');
+    const fHanja       = document.getElementById('fHanja');
+    const fManchu      = document.getElementById('fManchu');
+    const fDesc        = document.getElementById('fDesc');
+    const toastEl      = document.getElementById('toast');
+
+    // ── Toast ──
+    let toastTimer;
+    function showToast(msg, duration = 2800) {
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), duration);
+    }
+
+    // ── GitHub API helpers ──
+    function apiHeaders() {
+      return {
+        'Authorization': `token ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/vnd.github+json'
+      };
+    }
+
+    async function fetchFile() {
+      const url = `https://api.github.com/repos/${REPO}/contents/${PATH}?ref=${BRANCH}&t=${Date.now()}`;
+      const headers = token ? apiHeaders() : { 'Accept': 'application/vnd.github+json' };
+      const res = await fetch(url, { headers });
+      if (res.status === 404) {
+        // 파일이 아직 없으면 빈 배열로 시작
+        fileSha = '';
+        return [];
+      }
+      if (!res.ok) throw new Error(`GitHub API 오류: ${res.status}`);
+      const data = await res.json();
+      fileSha = data.sha;
+      const decoded = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+      return JSON.parse(decoded);
+    }
+
+    async function saveFile(newEntries, commitMsg) {
+      const content = btoa(unescape(encodeURIComponent(JSON.stringify(newEntries, null, 2))));
+      const body = { message: commitMsg, content, branch: BRANCH };
+      if (fileSha) body.sha = fileSha;
+
+      const res = await fetch(
+        `https://api.github.com/repos/${REPO}/contents/${PATH}`,
+        { method: 'PUT', headers: apiHeaders(), body: JSON.stringify(body) }
+      );
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || `저장 실패 (${res.status})`);
+      }
+      const data = await res.json();
+      fileSha = data.content.sha;
+    }
+
+    // ── Render table ──
+    function renderTable(filter = '') {
+      const q = filter.trim().toLowerCase();
+      const filtered = q
+        ? entries.filter(e =>
+            (e.hanja  || '').toLowerCase().includes(q) ||
+            (e.manchu || '').toLowerCase().includes(q) ||
+            (e.desc   || '').toLowerCase().includes(q)
+          )
+        : entries;
+
+      if (filtered.length === 0) {
+        tableBody.innerHTML = `<tr class="empty-row"><td colspan="4">${q ? '검색 결과 없음' : '항목이 없습니다. 항목을 추가해보세요.'}</td></tr>`;
+        return;
+      }
+
+      tableBody.innerHTML = filtered.map(e => `
+        <tr data-id="${e.id}">
+          <td class="hanja">${esc(e.hanja)}</td>
+          <td class="manchu">${esc(e.manchu)}</td>
+          <td class="desc">${esc(e.desc)}</td>
+          <td class="actions" ${authed ? '' : 'style="display:none"'}>
+            <button class="btn-edit" data-id="${e.id}">수정</button>
+            <button class="btn-del"  data-id="${e.id}">삭제</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function esc(s) {
+      return String(s || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+    }
+
+    // ── Auth ──
+    tokenBtn.addEventListener('click', async () => {
+      const t = tokenInput.value.trim();
+      if (!t) return;
+      tokenBtn.disabled = true;
+      tokenBtn.textContent = '확인 중…';
+      try {
+        // verify token by fetching user
+        const res = await fetch('https://api.github.com/user', {
+          headers: { 'Authorization': `token ${t}`, 'Accept': 'application/vnd.github+json' }
+        });
+        if (!res.ok) throw new Error('인증 실패');
+        const user = await res.json();
+        token  = t;
+        authed = true;
+        authStatus.textContent = `✓ ${user.login} 로 인증됨`;
+        authStatus.className = 'auth-status ok';
+        addBtn.disabled = false;
+        actionsHeader.style.display = '';
+        tokenInput.value = '';
+        renderTable(searchInput.value);
+        showToast(`${user.login} 로 로그인 완료`);
+      } catch(err) {
+        authStatus.textContent = '✗ 토큰이 올바르지 않습니다';
+        authStatus.className = 'auth-status fail';
+      } finally {
+        tokenBtn.disabled = false;
+        tokenBtn.textContent = '확인';
+      }
+    });
+
+    tokenInput.addEventListener('keydown', e => { if (e.key === 'Enter') tokenBtn.click(); });
+
+    // ── Search ──
+    searchInput.addEventListener('input', () => renderTable(searchInput.value));
+
+    // ── Add button ──
+    addBtn.addEventListener('click', () => openModal(null));
+
+    // ── Table click delegation (edit/delete) ──
+    tableBody.addEventListener('click', e => {
+      const id = e.target.dataset.id;
+      if (!id) return;
+      if (e.target.classList.contains('btn-edit')) openModal(id);
+      if (e.target.classList.contains('btn-del'))  confirmDelete(id);
+    });
+
+    // ── Modal ──
+    function openModal(id) {
+      editingId = id;
+      if (id) {
+        const entry = entries.find(e => e.id === id);
+        modalTitle.textContent = '항목 수정';
+        fHanja.value = entry.hanja  || '';
+        fManchu.value= entry.manchu || '';
+        fDesc.value  = entry.desc   || '';
+      } else {
+        modalTitle.textContent = '항목 추가';
+        fHanja.value = fManchu.value = fDesc.value = '';
+      }
+      modalBackdrop.classList.add('open');
+      fHanja.focus();
+    }
+
+    function closeModal() {
+      modalBackdrop.classList.remove('open');
+      editingId = null;
+    }
+
+    modalCancel.addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', e => { if (e.target === modalBackdrop) closeModal(); });
+
+    modalSave.addEventListener('click', async () => {
+      const hanja = fHanja.value.trim();
+      if (!hanja) { fHanja.focus(); showToast('지명_한자를 입력해주세요'); return; }
+
+      modalSave.disabled = true;
+      modalSave.textContent = '저장 중…';
+
+      try {
+        let newEntries;
+        if (editingId) {
+          newEntries = entries.map(e => e.id === editingId
+            ? { ...e, hanja, manchu: fManchu.value.trim(), desc: fDesc.value.trim() }
+            : e
+          );
+          await saveFile(newEntries, `gazetteer: update "${hanja}"`);
+          entries = newEntries;
+          showToast(`"${hanja}" 수정 완료`);
+        } else {
+          const newEntry = {
+            id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+            hanja, manchu: fManchu.value.trim(), desc: fDesc.value.trim()
+          };
+          newEntries = [...entries, newEntry];
+          await saveFile(newEntries, `gazetteer: add "${hanja}"`);
+          entries = newEntries;
+          showToast(`"${hanja}" 추가 완료`);
+        }
+        closeModal();
+        renderTable(searchInput.value);
+      } catch(err) {
+        showToast('⚠ ' + err.message, 4000);
+      } finally {
+        modalSave.disabled = false;
+        modalSave.textContent = '저장';
+      }
+    });
+
+    // ── Delete ──
+    async function confirmDelete(id) {
+      const entry = entries.find(e => e.id === id);
+      if (!entry) return;
+      if (!confirm(`"${entry.hanja}" 을(를) 삭제할까요?`)) return;
+      try {
+        const newEntries = entries.filter(e => e.id !== id);
+        await saveFile(newEntries, `gazetteer: delete "${entry.hanja}"`);
+        entries = newEntries;
+        renderTable(searchInput.value);
+        showToast(`"${entry.hanja}" 삭제 완료`);
+      } catch(err) {
+        showToast('⚠ ' + err.message, 4000);
+      }
+    }
+
+    // ── Init ──
+    (async () => {
+      try {
+        entries = await fetchFile();
+        renderTable();
+      } catch(err) {
+        tableBody.innerHTML = `<tr class="empty-row"><td colspan="5">데이터 불러오기 실패: ${err.message}</td></tr>`;
+      }
+    })();
+
+  })();
+  </script>
 </body>
 </html>
