@@ -23,7 +23,7 @@
     .topnav a:hover { text-decoration: underline; }
 
     body { padding-top: 44px; }
-    main { max-width: 960px; margin: 0 auto; padding: 28px 20px 60px; }
+    main { max-width: 1400px; margin: 0 auto; padding: 28px 32px 60px; }
     h1 { font-size: 22px; font-weight: 800; margin: 0 0 6px; }
     .subtitle { color: #666; font-size: 13px; margin-bottom: 24px; }
 
@@ -85,6 +85,7 @@
     th.sortable:not(.asc):not(.desc) .sort-icon::after { content: '⇅'; }
 
     /* 컬럼 너비 */
+    col.col-id      { width: 48px;  }
     col.col-hanja   { width: 120px; }
     col.col-manchu  { width: 160px; }
     col.col-time    { width: 110px; }
@@ -96,6 +97,7 @@
     tbody tr:last-child { border-bottom: none; }
     tbody tr:hover { background: #fafaf8; }
     td { padding: 9px 12px; vertical-align: top; }
+    td.seq    { color: #bbb; font-size: 12px; text-align: center; white-space: nowrap; }
     td.hanja  { font-size: 14px; font-weight: 600; white-space: nowrap; }
     td.manchu { font-family: monospace; color: #444; white-space: nowrap; }
     td.time   { color: #555; white-space: nowrap; }
@@ -209,6 +211,7 @@
     <div class="table-wrap">
       <table id="mainTable">
         <colgroup>
+          <col class="col-id">
           <col class="col-hanja">
           <col class="col-manchu">
           <col class="col-time">
@@ -218,6 +221,7 @@
         </colgroup>
         <thead>
           <tr>
+            <th class="sortable" data-col="seq" style="text-align:center">No<span class="sort-arrow"> ⇅</span></th>
             <th class="sortable" data-col="hanja">지명_한자<span class="sort-arrow"> ⇅</span></th>
             <th class="sortable" data-col="manchu">지명_만주어<span class="sort-arrow"> ⇅</span></th>
             <th class="sortable" data-col="time">시간 레이어<span class="sort-arrow"> ⇅</span></th>
@@ -227,7 +231,7 @@
           </tr>
         </thead>
         <tbody id="tableBody">
-          <tr class="empty-row"><td colspan="6">불러오는 중…</td></tr>
+          <tr class="empty-row"><td colspan="7">불러오는 중…</td></tr>
         </tbody>
       </table>
     </div>
@@ -347,17 +351,24 @@
     // ── Sort ──
     function getSortedFiltered(filter) {
       const q = filter.trim().toLowerCase();
+      // seq(원래 순서) 부여
+      const withSeq = entries.map((e, i) => ({ ...e, seq: i + 1 }));
+
       let list = q
-        ? entries.filter(e =>
+        ? withSeq.filter(e =>
             (e.hanja  || '').toLowerCase().includes(q) ||
             (e.manchu || '').toLowerCase().includes(q) ||
             (e.time   || '').toLowerCase().includes(q) ||
             (e.type   || '').toLowerCase().includes(q) ||
             (e.desc   || '').toLowerCase().includes(q))
-        : [...entries];
+        : [...withSeq];
 
       if (sortState.col) {
         list.sort((a, b) => {
+          // seq는 숫자 비교
+          if (sortState.col === 'seq') {
+            return sortState.dir === 'asc' ? a.seq - b.seq : b.seq - a.seq;
+          }
           const va = (a[sortState.col] || '').toLowerCase();
           const vb = (b[sortState.col] || '').toLowerCase();
           return sortState.dir === 'asc'
@@ -370,7 +381,6 @@
 
     // ── Render table ──
     function renderTable(filter = '') {
-      // 헤더 정렬 아이콘 업데이트
       document.querySelectorAll('th.sortable').forEach(th => {
         th.classList.remove('sort-asc', 'sort-desc');
         const arrow = th.querySelector('.sort-arrow');
@@ -386,12 +396,13 @@
 
       if (list.length === 0) {
         const msg = filter.trim() ? '검색 결과 없음' : '항목이 없습니다. 항목을 추가해보세요.';
-        tableBody.innerHTML = `<tr class="empty-row"><td colspan="6">${msg}</td></tr>`;
+        tableBody.innerHTML = `<tr class="empty-row"><td colspan="7">${msg}</td></tr>`;
         return;
       }
 
       tableBody.innerHTML = list.map(e => `
         <tr data-id="${e.id}">
+          <td class="seq">${e.seq}</td>
           <td class="hanja">${esc(e.hanja)}</td>
           <td class="manchu">${esc(e.manchu)}</td>
           <td class="time">${esc(e.time)}</td>
