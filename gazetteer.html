@@ -19,7 +19,7 @@
       background: rgba(255,255,255,0.95); z-index: 1000;
       border-bottom: 1px solid #ddd;
     }
-    .topnav a { text-decoration: none; color: #111; font-weight: 600; font-size: 14px; }
+    .topnav a { text-decoration: none; color: #111; font-weight: 800; font-size: 16px; }
     .topnav a:hover { text-decoration: underline; }
 
     body { padding-top: 44px; }
@@ -75,13 +75,15 @@
       padding: 10px 12px; font-weight: 700;
       border-bottom: 1px solid #ddd; white-space: nowrap;
       user-select: none;
+      border-right: 1px solid #d8d8d4;
     }
+    thead th:last-child { border-right: none; }
     th.sortable { cursor: pointer; }
     th.sortable:hover { background: #e4e4e0; }
 
     /* 컬럼 너비 */
     col.col-id       { width: 48px;  }
-    col.col-hanja    { width: 160px; }
+    col.col-hanja    { width: 120px; }
     col.col-manchu   { width: 160px; }
     col.col-time     { width: 110px; }
     col.col-type     { width: 80px;  }
@@ -92,7 +94,9 @@
     tbody tr { border-bottom: 1px solid #d0d0cc; }
     tbody tr:last-child { border-bottom: none; }
     tbody tr:hover { background: #fafaf8; }
-    td { padding: 9px 12px; vertical-align: top; }
+    td { padding: 9px 12px; vertical-align: top; border-right: 1px solid #e0e0dc; }
+    td:last-child { border-right: none; }
+    .empty-row td { text-align: center; color: #999; padding: 32px; border-right: none; }
     td.seq    { color: #bbb; font-size: 12px; text-align: center; white-space: nowrap; }
     td.hanja  { font-size: 14px; font-weight: 600; word-break: break-word; overflow-wrap: break-word; }
     td.manchu { font-family: monospace; color: #444; word-break: break-word; overflow-wrap: break-word; }
@@ -110,7 +114,7 @@
     .btn-edit:hover { background: #c5d8fc; }
     .btn-del  { background: #fce8e6; color: #c0392b; }
     .btn-del:hover  { background: #f5c0bb; }
-    .empty-row td { text-align: center; color: #999; padding: 32px; }
+    
 
     /* ── Sortable headers ── */
     thead th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
