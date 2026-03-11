@@ -104,7 +104,7 @@
 
     thead tr { background: #3a3028; color: #f5f0e8; }
     thead th {
-      padding: 10px 12px; text-align: left;
+      padding: 10px 12px; text-align: center;
       font-weight: 700; white-space: nowrap;
       border-right: 1px solid #5a4a3a; font-size: 13px;
     }
@@ -124,7 +124,15 @@
     td.hanja  { font-size: 14px; font-weight: 600; word-break: break-word; }
     td.manchu { font-style: italic; color: #555; font-size: 12px; word-break: break-word; }
     td.time   { color: #555; white-space: nowrap; font-size: 12px; }
-    td.type   { color: #555; white-space: nowrap; font-size: 12px; }
+    td.type   { white-space: nowrap; font-size: 12px; text-align: center; vertical-align: middle; }
+    .badge {
+      display: inline-block; padding: 2px 8px;
+      border-radius: 4px; font-size: 11px; font-weight: 700;
+      white-space: nowrap; letter-spacing: 0.2px;
+    }
+    .badge-변외카룬 { background: #d8ecd8; color: #1a5a1a; }
+    .badge-변내카룬 { background: #d8e4f0; color: #1a3a6a; }
+    .badge-위장카룬 { background: #ffe8c8; color: #7a4000; }
     td.desc   { color: #444; word-break: break-word; }
     td.trust  { color: #555; white-space: nowrap; text-align: center; font-size: 12px; }
     td.actions { white-space: nowrap; }
@@ -258,7 +266,7 @@
             <th>지명_만주어</th>
             <th>시간 레이어</th>
             <th>유형</th>
-            <th>위치를 비정한 과정과 근거 자료</th>
+            <th style="text-align:left">위치를 비정한 과정과 근거 자료</th>
             <th style="text-align:center">신뢰도</th>
             <th id="actionsHeader" style="display:none">작업</th>
           </tr>
@@ -476,7 +484,7 @@
           <td class="hanja">${esc(e.hanja)}</td>
           <td class="manchu">${esc(e.manchu)}</td>
           <td class="time">${esc(e.time)}</td>
-          <td class="type">${esc(e.type)}</td>
+          <td class="type">${e.type ? `<span class="badge badge-${esc(e.type)}">${esc(e.type)}</span>` : ''}</td>
           <td class="desc">${esc(e.desc)}</td>
           <td class="trust">${esc(e.trust)}</td>
           <td class="actions"${authed ? '' : ' style="display:none"'}>
