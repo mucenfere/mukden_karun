@@ -235,6 +235,7 @@
 
   <script>
     const map = L.map('map').setView([42, 126], 7);
+    map.getContainer().classList.add('labels-hidden');
     map.on('click', (e) => {
       if (e.originalEvent._stopped) return;
       highlightLayer(null);
@@ -371,15 +372,15 @@
     }
 
     // ── 라벨 전체 토글 (레이어 컨트롤 삽입용) ──
-    let labelsVisible = true;
+    let labelsVisible = false;
     function insertLabelToggle() {
       const layerBox = document.querySelector('.leaflet-control-layers');
       if (!layerBox) return;
       // 이미 삽입됐으면 스킵
       if (layerBox.querySelector('.label-toggle-btn')) return;
       const btn = document.createElement('button');
-      btn.className = 'label-toggle-btn';
-      btn.textContent = '🏷 라벨 ON';
+      btn.className = 'label-toggle-btn off';
+      btn.textContent = '🏷 라벨 OFF';
       btn.addEventListener('click', () => {
         labelsVisible = !labelsVisible;
         if (labelsVisible) {
@@ -613,7 +614,8 @@
         groupCheckboxes: true
       }).addTo(map);
 
-      // 레이어 컨트롤 렌더링 후 라벨 토글 버튼 삽입
+      // 레이어 컨트롤 렌더링 후 라벨 토글 버튼 삽입 (초기 OFF)
+      map.getContainer().classList.add('labels-hidden');
       insertLabelToggle();
 
     })().catch(err => {
