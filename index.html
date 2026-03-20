@@ -7,7 +7,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-YWD860LFFR');
 </script>
 
@@ -41,31 +40,31 @@
     }
     .topnav a{ text-decoration:none; color:#111; font-weight:600; }
 
-/* lv1, lv2: 아이콘 */
-.admin-dot{
-  width: 6px; height: 6px; 
-  border-radius: 50%;
-  background: #004eff; 
-  border: 0; 
-  box-shadow: none; 
-}
+    /* lv1, lv2: 아이콘 */
+    .admin-dot{
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #004eff;
+      border: 0;
+      box-shadow: none;
+    }
 
     /* 삼각형 라벨 */
     .tri {
-  width: 14px;
-  height: 14px;
-  background: var(--tri, #d62728);
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  border: 1px solid rgba(0,0,0,0.75);
-  box-sizing: border-box;
-  filter: drop-shadow(0 1px 1px rgba(255,255,255,0.8));
-}
-    
-#map{
-  width: 100%;
-  height: calc(100% - 44px);
-  margin-top: 44px;
-}
+      width: 14px;
+      height: 14px;
+      background: var(--tri, #d62728);
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      border: 1px solid rgba(0,0,0,0.75);
+      box-sizing: border-box;
+      filter: drop-shadow(0 1px 1px rgba(255,255,255,0.8));
+    }
+
+    #map{
+      width: 100%;
+      height: calc(100% - 44px);
+      margin-top: 44px;
+    }
 
     /* Tooltip labels */
     .leaflet-tooltip.plain-label{
@@ -81,7 +80,10 @@
     }
     .leaflet-tooltip.plain-label:before{ display: none !important; }
 
-    /* Make layers control scroll internally (not whole page) */
+    /* 라벨 숨김 */
+    .labels-hidden .leaflet-tooltip.plain-label { display: none !important; }
+
+    /* Make layers control scroll internally */
     .leaflet-control-layers{
       max-height: calc(100vh - 60px);
       overflow: hidden;
@@ -92,100 +94,120 @@
       overflow-x: hidden;
       padding-right: 6px;
     }
-    
-/* 레이어바의 너비 조절 */
-  .leaflet-control-layers {
-  max-height: calc(100vh - 60px);
-  overflow: hidden;
-  min-width: 200px;
-}
-    
-/* 그룹명 행: 들여쓰기 없음 */
-.leaflet-control-layers-group-label {
-  padding-left: 0 !important;
-}
 
-/* 하위 레이어: 들여쓰기 */
-.leaflet-control-layers-group label:not(.leaflet-control-layers-group-label) {
-  padding-left: 16px;
-  display: block;
-}
-    
-/*그룹명 폰트*/
-.leaflet-control-layers-group-name {
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  margin-top: 10px;
-  margin-bottom: 6px;
-  padding-left: 0;
-}
+    .leaflet-control-layers {
+      max-height: calc(100vh - 60px);
+      overflow: hidden;
+      min-width: 200px;
+    }
 
-.info-panel{
-  position: fixed;
-  top: 44px;
-  left: 0;        
-  right: auto;    
-  width: 360px;
-  height: calc(100vh - 44px);
-  background: rgba(255,255,255,0.98);
-  border-right: 1px solid #ddd; 
-  border-left: none;
-  z-index: 1200;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 6px 0 20px rgba(0,0,0,0.08); 
-}
+    /* 그룹명 행: 들여쓰기 없음 */
+    .leaflet-control-layers-group-label {
+      padding-left: 0 !important;
+    }
 
-.info-panel.hidden{ display:none; }
+    /* 하위 레이어: 들여쓰기 */
+    .leaflet-control-layers-group label:not(.leaflet-control-layers-group-label) {
+      padding-left: 16px;
+      display: block;
+    }
 
-.info-head{
-  display:flex;
-  align-items:center;
-  justify-content: space-between;
-  padding: 10px 12px;
-  border-bottom: 1px solid #eee;
-}
-.info-title{ font-weight: 800; }
-.info-close{
-  font-size: 22px;
-  line-height: 22px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
+    /* 그룹명 폰트 */
+    .leaflet-control-layers-group-name {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      margin-top: 10px;
+      margin-bottom: 6px;
+      padding-left: 0;
+    }
 
-.info-body{
-  padding: 10px 12px;
-  overflow: auto;
-  font-size: 15px;
-}
+    /* ── 범례 아이콘 (레이어 컨트롤 내부) ── */
+    .legend-tri {
+      display: inline-block;
+      width: 10px; height: 10px;
+      vertical-align: middle;
+      margin-right: 5px;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      flex-shrink: 0;
+    }
+    .legend-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-right: 5px;
+      flex-shrink: 0;
+    }
+    .legend-line {
+      display: inline-block;
+      width: 18px; height: 3px;
+      vertical-align: middle;
+      margin-right: 5px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    /* 레이어 이름 행 flex 정렬 */
+    .leaflet-control-layers-overlays label span,
+    .leaflet-control-layers-overlays label {
+      display: flex !important;
+      align-items: center;
+    }
 
-.info-body table{ width:100%; border-collapse: collapse; }
-.info-body th{ text-align:left; padding:4px 8px 4px 0; white-space:nowrap; vertical-align: top; }
-.info-body td{ padding:4px 0; word-break: break-word; }
-.marker-selected-png {
-  filter: drop-shadow(0 0 4px #00ffff) drop-shadow(0 0 8px #00ffff) drop-shadow(0 0 12px #00ffff) drop-shadow(0 0 16px #00ffff) !important;
-  transform: scale(1.2);
-  transform-origin: center;
-}
+    /* ── 라벨 토글 버튼 ── */
+    .label-toggle-btn {
+      background: rgba(255,255,255,0.95);
+      border: 2px solid rgba(0,0,0,0.2);
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #333;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+    .label-toggle-btn:hover { background: #f4f4f4; }
+    .label-toggle-btn.off { color: #aaa; }
 
-/* div 아이콘 선택 강조 (admin-dot, 삼각형) */
-.marker-selected-div > div {
-  transform: scale(1.2);
-  transform-origin: center;
-}
-.marker-selected-div .admin-dot {
-  background: #00ffff !important;
-  width: 10px !important;
-  height: 10px !important;
-}
-.marker-selected-div .tri {
-  --tri: #00ffff !important;
-  width: 14px !important;
-  height: 14px !important;
-}
-    
+    /* info panel */
+    .info-panel{
+      position: fixed;
+      top: 44px; left: 0; right: auto;
+      width: 360px;
+      height: calc(100vh - 44px);
+      background: rgba(255,255,255,0.98);
+      border-right: 1px solid #ddd;
+      border-left: none;
+      z-index: 1200;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 6px 0 20px rgba(0,0,0,0.08);
+    }
+    .info-panel.hidden{ display:none; }
+    .info-head{
+      display:flex; align-items:center; justify-content: space-between;
+      padding: 10px 12px; border-bottom: 1px solid #eee;
+    }
+    .info-title{ font-weight: 800; }
+    .info-close{
+      font-size: 22px; line-height: 22px;
+      border: none; background: transparent; cursor: pointer;
+    }
+    .info-body{
+      padding: 10px 12px; overflow: auto; font-size: 15px;
+    }
+    .info-body table{ width:100%; border-collapse: collapse; }
+    .info-body th{ text-align:left; padding:4px 8px 4px 0; white-space:nowrap; vertical-align: top; }
+    .info-body td{ padding:4px 0; word-break: break-word; }
+
+    .marker-selected-png {
+      filter: drop-shadow(0 0 4px #00ffff) drop-shadow(0 0 8px #00ffff) drop-shadow(0 0 12px #00ffff) drop-shadow(0 0 16px #00ffff) !important;
+      transform: scale(1.2); transform-origin: center;
+    }
+    .marker-selected-div > div { transform: scale(1.2); transform-origin: center; }
+    .marker-selected-div .admin-dot { background: #00ffff !important; width: 10px !important; height: 10px !important; }
+    .marker-selected-div .tri { --tri: #00ffff !important; width: 14px !important; height: 14px !important; }
   </style>
 </head>
 
@@ -200,391 +222,390 @@
 
   <div id="map"></div>
   <div id="infoPanel" class="info-panel hidden">
-  <div class="info-head">
-    <div id="infoTitle" class="info-title">정보</div>
-    <button id="infoClose" class="info-close" type="button">×</button>
+    <div class="info-head">
+      <div id="infoTitle" class="info-title">정보</div>
+      <button id="infoClose" class="info-close" type="button">×</button>
+    </div>
+    <div id="infoBody" class="info-body"></div>
   </div>
-  <div id="infoBody" class="info-body"></div>
-</div>
 
   <script>
     const map = L.map('map').setView([42, 126], 7);
-     map.on('click', (e) => {
-     if (e.originalEvent._stopped) return; 
-     highlightLayer(null);
-     closeInfoPanel();
-     });
-    const mkDivIcon = (className, size) => L.divIcon({
-  className: '',
-  html: `<div class="${className}"></div>`,
-  iconSize: [size, size],
-  iconAnchor: [size/2, size/2],
-  popupAnchor: [0, -size/2]
-});
-const oms = new OverlappingMarkerSpiderfier(map, {
-  keepSpiderfied: true,  
-  nearbyDistance: 20,    
-  legWeight: 1.2
-});
-    
-    
-const icon_admin = mkDivIcon('admin-dot', 10);
-    
-const panel = document.getElementById('infoPanel');
-L.DomEvent.disableClickPropagation(panel);
-L.DomEvent.disableScrollPropagation(panel);
-const infoTitleEl = document.getElementById('infoTitle');
-const infoBodyEl  = document.getElementById('infoBody');
-const infoCloseEl = document.getElementById('infoClose');
-
-function escapeHtml(s){
-  return String(s ?? '').replace(/[&<>"']/g, (m)=>({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
-  }[m]));
-}
-
-// 선택 강조 관리
-let selectedLayer = null;
-let selectedOriginalStyle = null;
-
-function highlightLayer(layer) {
-  // 이전 선택 해제
-  if (selectedLayer) {
-    if (selectedOriginalStyle) {
-      selectedLayer.setStyle(selectedOriginalStyle);
-      selectedOriginalStyle = null;
-    }
-    if (selectedLayer._selectedEl) {
-      selectedLayer._selectedEl.classList.remove('marker-selected-png', 'marker-selected-div');
-      selectedLayer._selectedEl = null;
-    }
-    selectedLayer = null;
-  }
-
-  if (!layer) return;
-  selectedLayer = layer;
-
-  // L.Marker (포인트 - div 아이콘 또는 PNG 아이콘)
-  if (layer instanceof L.Marker) {
-    const el = layer.getElement();
-    if (!el) return;
-    const isPng = layer.options?.icon instanceof L.Icon && !(layer.options?.icon instanceof L.DivIcon);
-    const cls = isPng ? 'marker-selected-png' : 'marker-selected-div';
-    el.classList.add(cls);
-    layer._selectedEl = el;
-    return;
-  }
-
-  // L.CircleMarker (CHGIS 포인트)
-  if (layer instanceof L.CircleMarker) {
-    selectedOriginalStyle = {
-      color: layer.options.color,
-      weight: layer.options.weight,
-      fillColor: layer.options.fillColor,
-      fillOpacity: layer.options.fillOpacity,
-      radius: layer.options.radius,
-    };
-    layer.setStyle({ color: '#00ffff', fillColor: '#00ffff', fillOpacity: 1, weight: 2 });
-    layer.setRadius(4);
-    return;
-  }
-
-  // L.Polyline / L.Polygon
-  if (layer instanceof L.Path) {
-    selectedOriginalStyle = {
-      color: layer.options.color,
-      weight: layer.options.weight,
-      opacity: layer.options.opacity,
-      fillOpacity: layer.options.fillOpacity,
-    };
-    layer.setStyle({ color: '#00ffff', weight: 5, opacity: 1, fillOpacity: 0.5 });
-    layer.bringToFront();
-  }
-}
-
-function openInfoPanel(title, props){
-  infoTitleEl.textContent = title || '정보';
-
-  const rows = Object.entries(props || {})
-    .map(([k,v]) => `<tr><th>${escapeHtml(k)}</th><td>${escapeHtml(v)}</td></tr>`)
-    .join('');
-
-  infoBodyEl.innerHTML = `<table>${rows}</table>`;
-
-  panel.classList.remove('hidden');
-}
-function closeInfoPanel(){
-  panel.classList.add('hidden');
-}
-    if (infoCloseEl) infoCloseEl.addEventListener('click', closeInfoPanel);
-    
-    // Basemaps
-    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors'
+    map.on('click', (e) => {
+      if (e.originalEvent._stopped) return;
+      highlightLayer(null);
+      closeInfoPanel();
     });
 
+    const mkDivIcon = (className, size) => L.divIcon({
+      className: '',
+      html: `<div class="${className}"></div>`,
+      iconSize: [size, size],
+      iconAnchor: [size/2, size/2],
+      popupAnchor: [0, -size/2]
+    });
+
+    const oms = new OverlappingMarkerSpiderfier(map, {
+      keepSpiderfied: true,
+      nearbyDistance: 20,
+      legWeight: 1.2
+    });
+
+    const icon_admin = mkDivIcon('admin-dot', 10);
+
+    const panel = document.getElementById('infoPanel');
+    L.DomEvent.disableClickPropagation(panel);
+    L.DomEvent.disableScrollPropagation(panel);
+    const infoTitleEl = document.getElementById('infoTitle');
+    const infoBodyEl  = document.getElementById('infoBody');
+    const infoCloseEl = document.getElementById('infoClose');
+
+    function escapeHtml(s){
+      return String(s ?? '').replace(/[&<>"']/g, (m)=>({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+      }[m]));
+    }
+
+    let selectedLayer = null;
+    let selectedOriginalStyle = null;
+
+    function highlightLayer(layer) {
+      if (selectedLayer) {
+        if (selectedOriginalStyle) {
+          selectedLayer.setStyle(selectedOriginalStyle);
+          selectedOriginalStyle = null;
+        }
+        if (selectedLayer._selectedEl) {
+          selectedLayer._selectedEl.classList.remove('marker-selected-png', 'marker-selected-div');
+          selectedLayer._selectedEl = null;
+        }
+        selectedLayer = null;
+      }
+      if (!layer) return;
+      selectedLayer = layer;
+      if (layer instanceof L.Marker) {
+        const el = layer.getElement();
+        if (!el) return;
+        const isPng = layer.options?.icon instanceof L.Icon && !(layer.options?.icon instanceof L.DivIcon);
+        const cls = isPng ? 'marker-selected-png' : 'marker-selected-div';
+        el.classList.add(cls);
+        layer._selectedEl = el;
+        return;
+      }
+      if (layer instanceof L.CircleMarker) {
+        selectedOriginalStyle = {
+          color: layer.options.color, weight: layer.options.weight,
+          fillColor: layer.options.fillColor, fillOpacity: layer.options.fillOpacity,
+          radius: layer.options.radius,
+        };
+        layer.setStyle({ color: '#00ffff', fillColor: '#00ffff', fillOpacity: 1, weight: 2 });
+        layer.setRadius(4); return;
+      }
+      if (layer instanceof L.Path) {
+        selectedOriginalStyle = {
+          color: layer.options.color, weight: layer.options.weight,
+          opacity: layer.options.opacity, fillOpacity: layer.options.fillOpacity,
+        };
+        layer.setStyle({ color: '#00ffff', weight: 5, opacity: 1, fillOpacity: 0.5 });
+        layer.bringToFront();
+      }
+    }
+
+    function openInfoPanel(title, props){
+      infoTitleEl.textContent = title || '정보';
+      const rows = Object.entries(props || {})
+        .map(([k,v]) => `<tr><th>${escapeHtml(k)}</th><td>${escapeHtml(v)}</td></tr>`)
+        .join('');
+      infoBodyEl.innerHTML = `<table>${rows}</table>`;
+      panel.classList.remove('hidden');
+    }
+    function closeInfoPanel(){ panel.classList.add('hidden'); }
+    if (infoCloseEl) infoCloseEl.addEventListener('click', closeInfoPanel);
+
+    // ── Basemaps ──
+    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19, attribution: '&copy; OpenStreetMap contributors'
+    });
     const satellite = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       { maxZoom: 19, attribution: '&copy; Esri' }
     );
-
     const labels = L.tileLayer(
       'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
       { maxZoom: 19, attribution: '&copy; Esri', opacity: 0.5 }
     );
-
     satellite.addTo(map);
-      const baseLayers = {
-        "위성": satellite, 
-        "OSM": osm
-      };
+    const baseLayers = { "위성": satellite, "OSM": osm };
 
-    // Styles
+    // ── Styles ──
     const willowpalisade = { color: '#d60000', weight: 2, opacity: 1 };
 
-async function loadGeoJSON(url, options = {}) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed to fetch ${url} (HTTP ${res.status})`);
-  const gj = await res.json();
-
-  return L.geoJSON(gj, {
-    style: options.style,
-    pointToLayer: options.pointToLayer,
-    onEachFeature: (feature, layer) => {
-      const p = feature.properties || {};
-      const labelText = p.name_chf || p.name || p.NAME_FT || '정보';
-
-      if (options.label === true) {
-        layer.bindTooltip(labelText, {
-          permanent: true,
-          direction: 'top',
-          offset: [0, -6],
-          opacity: 1,
-          className: 'plain-label'
-        });
-      }
-layer.on('click', (e) => {
-  L.DomEvent.stopPropagation(e);
-  highlightLayer(layer);
-  openInfoPanel(labelText, p);
-});
+    // ── GeoJSON loader ──
+    async function loadGeoJSON(url, options = {}) {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Failed to fetch ${url} (HTTP ${res.status})`);
+      const gj = await res.json();
+      return L.geoJSON(gj, {
+        style: options.style,
+        pointToLayer: options.pointToLayer,
+        onEachFeature: (feature, layer) => {
+          const p = feature.properties || {};
+          const labelText = p.name_chf || p.name || p.NAME_FT || '정보';
+          if (options.label === true) {
+            layer.bindTooltip(labelText, {
+              permanent: true, direction: 'top', offset: [0, -6],
+              opacity: 1, className: 'plain-label'
+            });
+          }
+          layer.on('click', (e) => {
+            L.DomEvent.stopPropagation(e);
+            highlightLayer(layer);
+            openInfoPanel(labelText, p);
+          });
+        }
+      });
     }
-  });
-}
+
+    // ── 라벨 전체 토글 ──
+    let labelsVisible = true;
+    const LabelToggleControl = L.Control.extend({
+      onAdd(map) {
+        const btn = L.DomUtil.create('button', 'label-toggle-btn');
+        btn.textContent = '🏷 라벨 ON';
+        L.DomEvent.disableClickPropagation(btn);
+        btn.addEventListener('click', () => {
+          labelsVisible = !labelsVisible;
+          if (labelsVisible) {
+            map.getContainer().classList.remove('labels-hidden');
+            btn.textContent = '🏷 라벨 ON';
+            btn.classList.remove('off');
+          } else {
+            map.getContainer().classList.add('labels-hidden');
+            btn.textContent = '🏷 라벨 OFF';
+            btn.classList.add('off');
+          }
+        });
+        return btn;
+      }
+    });
+    new LabelToggleControl({ position: 'topleft' }).addTo(map);
+
+    // ── 범례 아이콘 헬퍼 ──
+    function triSvg(color) {
+      return `<span class="legend-tri" style="background:${color};"></span>`;
+    }
+    function dotSvg(color) {
+      return `<span class="legend-dot" style="background:${color};"></span>`;
+    }
+    function lineSvg(color) {
+      return `<span class="legend-line" style="background:${color};"></span>`;
+    }
+    // 두 색 삼각형 쌍 (변내+변외)
+    function triPair(c1, c2) {
+      return `${triSvg(c1)}${triSvg(c2)}`;
+    }
+
     (async () => {
 
-      //카룬
-async function fetchGeoJSON(url){
-     const res = await fetch(url);
-     if (!res.ok) throw new Error(`Failed to fetch ${url} (HTTP ${res.status})`);
-     return await res.json();
-     }
-    const karunAll = await fetchGeoJSON('./data/karun_all.geojson');
-      
-      // 국경선 백색 라인
+      async function fetchGeoJSON(url){
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`Failed to fetch ${url} (HTTP ${res.status})`);
+        return await res.json();
+      }
+
+      const karunAll = await fetchGeoJSON('./data/karun_all.geojson');
+
+      // 국경선
       const bordersWhite = await loadGeoJSON('./data/borders.geojson', {
-          style: { color: '#ffffff', weight: 1.8, opacity: 0.5 }
-       });
+        style: { color: '#ffffff', weight: 1.8, opacity: 0.5 }
+      });
       const bordersLayer = L.layerGroup([bordersWhite]).addTo(map);
-      
+
       // CHGIS
       const chgisprov_pgn = await loadGeoJSON('./data/v6_1820_prov_pgn.geojson', { style: { weight: 2, fillOpacity: 0.1 }});
       const chgispref_pgn = await loadGeoJSON('./data/v6_1820_pref_pgn.geojson', { style: { weight: 2, fillOpacity: 0.1 }});
-      const chgispref_pts = await loadGeoJSON('./data/v6_1820_pref_pts.geojson', { 
-                label: true,
-        pointToLayer: (f, latlng) => L.circleMarker(latlng, {
-          radius: 2,
-          color: '#000000',
-          weight: 1,
-          fillColor: '#000000',
-          fillOpacity: 1
-        })
-      });
-        const chgistwn_pts = await loadGeoJSON('./data/v6_1820_twn_pts.geojson', {
+      const chgispref_pts = await loadGeoJSON('./data/v6_1820_pref_pts.geojson', {
         label: true,
         pointToLayer: (f, latlng) => L.circleMarker(latlng, {
-          radius: 2,
-          color: '#000000',
-          weight: 1,
-          fillColor: '#000000',
-          fillOpacity: 1
+          radius: 2, color: '#000000', weight: 1, fillColor: '#000000', fillOpacity: 1
+        })
+      });
+      const chgistwn_pts = await loadGeoJSON('./data/v6_1820_twn_pts.geojson', {
+        label: true,
+        pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+          radius: 2, color: '#000000', weight: 1, fillColor: '#000000', fillOpacity: 1
         })
       });
 
-      //icon
-
-const icon_wp_gate = L.icon({
-  iconUrl: './data/img/willowgateicon.png',
-  iconSize: [10, 10],
-  iconAnchor: [9, 9],
-  popupAnchor: [0, -9]
-});
-const icon_giyamun = L.icon({
-  iconUrl: './data/img/giyamunicon.png',
-  iconSize: [10, 10],
-  iconAnchor: [9, 9],
-  popupAnchor: [0, -9]
-});   
-
-//카룬의 필터
-function zoneType(zoneStr){
-  const z = String(zoneStr || '').toLowerCase();
-  if (z.includes('변대') || z.includes(' tai')) return 'tai';
-  if (z.includes('변내') || z.includes('dorgi')) return 'dorgi';
-  if (z.includes('변외') || z.includes('tulergi')) return 'tulergi';
-  if (z.includes('위장') || z.includes('aba')) return 'aba';
-  return 'unknown';
-}
-
-// Triangle icon factory (no PNG)
-const mkTriIcon = (color, size = 10) => L.divIcon({
-  className: '', // Leaflet
-  html: `<div class="tri" style="--tri:${color}; width:${size}px; height:${size}px;"></div>`,
-  iconSize: [size, size],
-  iconAnchor: [size / 2, size / 2], 
-  popupAnchor: [0, -size / 2]
-});
-
-// GeoJSON point options using triangle marker
-const mkTriPt = (color, { size = 10, label = false } = {}) => ({
-  label,
-  pointToLayer: (f, latlng) => L.marker(latlng, { icon: mkTriIcon(color, size) })
-});
-function makeKarunLayer(gj, { time, ztype, color }) {
-  return L.geoJSON(gj, {
-    filter: (f) => {
-      const p = f.properties || {};
-      return p.time === time && zoneType(p.zone) === ztype;
-    },
-    pointToLayer: mkTriPt(color).pointToLayer,
-    onEachFeature: (feature, layer) => {
-      const p = feature.properties || {};
-      const labelText = p.name_chf || p.NAME_FT || '정보';
-      layer.bindTooltip(labelText, {
-        permanent: true,
-        direction: 'top',
-        offset: [0, -6],
-        opacity: 1,
-        className: 'plain-label'
+      // 아이콘
+      const icon_wp_gate = L.icon({
+        iconUrl: './data/img/willowgateicon.png',
+        iconSize: [10, 10], iconAnchor: [9, 9], popupAnchor: [0, -9]
+      });
+      const icon_giyamun = L.icon({
+        iconUrl: './data/img/giyamunicon.png',
+        iconSize: [10, 10], iconAnchor: [9, 9], popupAnchor: [0, -9]
       });
 
-      if (typeof openInfoPanel === 'function') {
-layer.on('click', (e) => {
-  L.DomEvent.stopPropagation(e);
-  highlightLayer(layer);
-  openInfoPanel(labelText, p); 
-});
+      // 카룬 zone 분류
+      function zoneType(zoneStr){
+        const z = String(zoneStr || '').toLowerCase();
+        if (z.includes('변대') || z.includes(' tai')) return 'tai';
+        if (z.includes('변내') || z.includes('dorgi')) return 'dorgi';
+        if (z.includes('변외') || z.includes('tulergi')) return 'tulergi';
+        if (z.includes('위장') || z.includes('aba')) return 'aba';
+        return 'unknown';
       }
-    }
-  });
-}
-      
-  const mkIconPt = (icon, { label = false } = {}) => ({
-    label,
-    pointToLayer: (f, latlng) => L.marker(latlng, { icon })
-  });
-      
-// 카룬 아이콘 색깔
-const dk_KX = '#00A2FF'; // 밝은 스카이블루
-const tk_KX = '#FFD400'; // 밝은 옐로(블루 보색)
 
-const dk_YZ = '#B000FF'; // 선명 퍼플
-const tk_YZ = '#7CFF00'; // 라임 그린(퍼플 보색)
+      // 삼각형 아이콘
+      const mkTriIcon = (color, size = 10) => L.divIcon({
+        className: '',
+        html: `<div class="tri" style="--tri:${color}; width:${size}px; height:${size}px;"></div>`,
+        iconSize: [size, size], iconAnchor: [size/2, size/2], popupAnchor: [0, -size/2]
+      });
 
-const dk_QL = '#00E676'; // 밝은 그린(민트 계열)
-const tk_QL = '#FF4DFF'; // 밝은 마젠타(그린 보색)
+      const mkTriPt = (color, { size = 10, label = false } = {}) => ({
+        label,
+        pointToLayer: (f, latlng) => L.marker(latlng, { icon: mkTriIcon(color, size) })
+      });
 
-const dk_JQ = '#FF8C00'; // 밝은 오렌지(빨강 아님)
-const tk_JQ = '#00E5FF'; // 밝은 시안(오렌지 대비)
-      
-const JQWC  = '#005CFF'; // 코발트 블루(시안/오렌지와 구분, 위성에서 강함)
+      function makeKarunLayer(gj, { time, ztype, color }) {
+        return L.geoJSON(gj, {
+          filter: (f) => {
+            const p = f.properties || {};
+            return p.time === time && zoneType(p.zone) === ztype;
+          },
+          pointToLayer: mkTriPt(color).pointToLayer,
+          onEachFeature: (feature, layer) => {
+            const p = feature.properties || {};
+            const labelText = p.name_chf || p.NAME_FT || '정보';
+            layer.bindTooltip(labelText, {
+              permanent: true, direction: 'top', offset: [0, -6],
+              opacity: 1, className: 'plain-label'
+            });
+            if (typeof openInfoPanel === 'function') {
+              layer.on('click', (e) => {
+                L.DomEvent.stopPropagation(e);
+                highlightLayer(layer);
+                openInfoPanel(labelText, p);
+              });
+            }
+          }
+        });
+      }
 
-const dk_DG = '#6A00FF'; // 진한 바이올렛(퍼플 계열이지만 YZ보다 더 푸른 톤)
-const tk_DG = '#00FFC8'; // 밝은 민트/아쿠아(바이올렛과 대비, 노랑과 겹침 없음)
+      const mkIconPt = (icon, { label = false } = {}) => ({
+        label,
+        pointToLayer: (f, latlng) => L.marker(latlng, { icon })
+      });
 
-// 변대(tai)
-const kx_tai = makeKarunLayer(karunAll, { time: '강희말기', ztype: 'tai', color: dk_KX });
-kx_tai.addTo(map)
-      
-// 강희: 변대(tai) + 변외(tulergi)
-const kx_tulergi = makeKarunLayer(karunAll, { time: '강희말기', ztype: 'tulergi', color: tk_KX });
-kx_tulergi.addTo(map)
-      
-// 옹정: 변내(dorgi) + 변외(tulergi)
-const yz_dorgi   = makeKarunLayer(karunAll, { time: '옹정초기', ztype: 'dorgi',   color: dk_YZ });
-const yz_tulergi = makeKarunLayer(karunAll, { time: '옹정초기', ztype: 'tulergi', color: tk_YZ });
-const karun_yz_bundle = L.layerGroup([yz_dorgi, yz_tulergi]);
+      // 카룬 색상
+      const dk_KX = '#00A2FF'; const tk_KX = '#FFD400';
+      const dk_YZ = '#B000FF'; const tk_YZ = '#7CFF00';
+      const dk_QL = '#00E676'; const tk_QL = '#FF4DFF';
+      const dk_JQ = '#FF8C00'; const tk_JQ = '#00E5FF';
+      const JQWC  = '#005CFF';
+      const dk_DG = '#6A00FF'; const tk_DG = '#00FFC8';
 
-// 건륭
-const ql_dorgi   = makeKarunLayer(karunAll, { time: '건륭중기', ztype: 'dorgi',   color: dk_QL });
-const ql_tulergi = makeKarunLayer(karunAll, { time: '건륭중기', ztype: 'tulergi', color: tk_QL });
-const karun_ql_bundle = L.layerGroup([ql_dorgi, ql_tulergi]);
+      // 카룬 레이어
+      const kx_tai     = makeKarunLayer(karunAll, { time: '강희말기', ztype: 'tai',     color: dk_KX });
+      kx_tai.addTo(map);
+      const kx_tulergi = makeKarunLayer(karunAll, { time: '강희말기', ztype: 'tulergi', color: tk_KX });
+      kx_tulergi.addTo(map);
 
-// 가경
-const jq_dorgi   = makeKarunLayer(karunAll, { time: '가경9년', ztype: 'dorgi',   color: dk_JQ });
-const jq_tulergi = makeKarunLayer(karunAll, { time: '가경9년', ztype: 'tulergi', color: tk_JQ });
-const karun_jq_bundle = L.layerGroup([jq_dorgi, jq_tulergi]);
+      const yz_dorgi   = makeKarunLayer(karunAll, { time: '옹정초기', ztype: 'dorgi',   color: dk_YZ });
+      const yz_tulergi = makeKarunLayer(karunAll, { time: '옹정초기', ztype: 'tulergi', color: tk_YZ });
+      const karun_yz_bundle = L.layerGroup([yz_dorgi, yz_tulergi]);
 
-// 가경위장
-const jq_weichang   = makeKarunLayer(karunAll, { time: '가경23년', ztype: 'aba',   color: JQWC });
+      const ql_dorgi   = makeKarunLayer(karunAll, { time: '건륭중기', ztype: 'dorgi',   color: dk_QL });
+      const ql_tulergi = makeKarunLayer(karunAll, { time: '건륭중기', ztype: 'tulergi', color: tk_QL });
+      const karun_ql_bundle = L.layerGroup([ql_dorgi, ql_tulergi]);
 
-// 도광
-const dg_dorgi   = makeKarunLayer(karunAll, { time: '도광27년', ztype: 'dorgi',   color: dk_DG });
-const dg_tulergi = makeKarunLayer(karunAll, { time: '도광27년', ztype: 'tulergi', color: tk_DG });
-const karun_dg_bundle = L.layerGroup([dg_dorgi, dg_tulergi]);
-      
-// 성경장군 경계선
-const admin_v1 = await loadGeoJSON('./data/admin_lv1_line.geojson', {
+      const jq_dorgi   = makeKarunLayer(karunAll, { time: '가경9년', ztype: 'dorgi',   color: dk_JQ });
+      const jq_tulergi = makeKarunLayer(karunAll, { time: '가경9년', ztype: 'tulergi', color: tk_JQ });
+      const karun_jq_bundle = L.layerGroup([jq_dorgi, jq_tulergi]);
+
+      const jq_weichang = makeKarunLayer(karunAll, { time: '가경23년', ztype: 'aba', color: JQWC });
+
+      const dg_dorgi   = makeKarunLayer(karunAll, { time: '도광27년', ztype: 'dorgi',   color: dk_DG });
+      const dg_tulergi = makeKarunLayer(karunAll, { time: '도광27년', ztype: 'tulergi', color: tk_DG });
+      const karun_dg_bundle = L.layerGroup([dg_dorgi, dg_tulergi]);
+
+      // 행정경계·역참
+      const admin_v1 = await loadGeoJSON('./data/admin_lv1_line.geojson', {
         style: { color: '#000000', weight: 4, opacity: 0.8 }
       });
       admin_v1.addTo(map);
-const admin_pts = await loadGeoJSON('./data/manchu_admin_pt.geojson', {
-  label: true,
-  pointToLayer: (feature, latlng) => {
-    const marker = L.marker(latlng, { icon: icon_admin });
-    oms.addMarker(marker);                                
-    return marker;
-  }
-});
+
+      const admin_pts = await loadGeoJSON('./data/manchu_admin_pt.geojson', {
+        label: true,
+        pointToLayer: (feature, latlng) => {
+          const marker = L.marker(latlng, { icon: icon_admin });
+          oms.addMarker(marker);
+          return marker;
+        }
+      });
       admin_pts.addTo(map);
- 
+
       const giyamun_pt = await loadGeoJSON('./data/manchu_giyamun_pt.geojson',
-      mkIconPt(icon_giyamun, { label: true })
+        mkIconPt(icon_giyamun, { label: true })
       );
-      giyamun_pt.addTo(map)
-      
-      const wpkangxi = await loadGeoJSON('./data/willowpalisade-kangxi.geojson', { style: willowpalisade });
-      const wp_gate_kx_pts = await loadGeoJSON('./data/willowpalisade_gate_kxyz.geojson',
-      mkIconPt(icon_wp_gate, { label: false })
-      );
+      giyamun_pt.addTo(map);
+
+      const wpkangxi     = await loadGeoJSON('./data/willowpalisade-kangxi.geojson',   { style: willowpalisade });
+      const wp_gate_kx_pts = await loadGeoJSON('./data/willowpalisade_gate_kxyz.geojson', mkIconPt(icon_wp_gate));
       const wpkangxi_bundle = L.layerGroup([wpkangxi, wp_gate_kx_pts]);
-      wpkangxi_bundle.addTo(map)
-      
-      const wpqianlong = await loadGeoJSON('./data/willowpalisade-qianlong.geojson', { style: willowpalisade });
-      const wp_gate_ql_pts = await loadGeoJSON('./data/willowpalisade_gate_ql.geojson',
-      mkIconPt(icon_wp_gate, { label: false })
-      );
+      wpkangxi_bundle.addTo(map);
+
+      const wpqianlong    = await loadGeoJSON('./data/willowpalisade-qianlong.geojson', { style: willowpalisade });
+      const wp_gate_ql_pts = await loadGeoJSON('./data/willowpalisade_gate_ql.geojson',  mkIconPt(icon_wp_gate));
       const wpqianlong_bundle = L.layerGroup([wpqianlong, wp_gate_ql_pts]);
-      
+
+      // ── 레이어 컨트롤 (범례 아이콘 포함) ──
       const groupedOverlays = {
-        "기본지리정보": { "성경장군 관할 경계선": admin_v1, "행정 지명(lv1/lv2)": admin_pts, "역참": giyamun_pt },
-        "유조변": { "유조변(강희-옹정)": wpkangxi_bundle, "유조변(건륭이후)": wpqianlong_bundle },
-        "邊臺": { "邊臺(강희기 이후)": kx_tai },
-        "강희기 카룬": { "변외카룬(강희말기)": kx_tulergi },
-        "옹정기 카룬": { "변내/변외카룬(옹정초기)": karun_yz_bundle },
-        "건륭기 카룬": { "변내/변외카룬(건륭중기)": karun_ql_bundle },
-        "가경기 카룬": { "변내/변외카룬(가경 9년)": karun_jq_bundle },
-        "가경기 위장카룬": { "성경위장 카룬(가경 23년)": jq_weichang },
-        "도광기 카룬": { "변내/변외카룬(도광 27년)": karun_dg_bundle },
-        "참고자료_CHGIS (1820)": { "省 경계선": chgisprov_pgn, "府 경계선": chgispref_pgn, "府 치소": chgispref_pts, "인문지명": chgistwn_pts}
+        "기본지리정보": {
+          [`${lineSvg('#000')}성경장군 관할 경계선`]:   admin_v1,
+          [`${dotSvg('#004eff')}행정 지명(lv1/lv2)`]:  admin_pts,
+          [`${dotSvg('#888')}역참`]:                    giyamun_pt
+        },
+        "유조변": {
+          [`${lineSvg('#d60000')}유조변(강희-옹정)`]:   wpkangxi_bundle,
+          [`${lineSvg('#d60000')}유조변(건륭이후)`]:    wpqianlong_bundle
+        },
+        "邊臺": {
+          [`${triSvg(dk_KX)}邊臺(강희기 이후)`]:        kx_tai
+        },
+        "강희기 카룬": {
+          [`${triSvg(tk_KX)}변외카룬(강희말기)`]:       kx_tulergi
+        },
+        "옹정기 카룬": {
+          [`${triSvg(dk_YZ)}${triSvg(tk_YZ)}변내/변외카룬(옹정초기)`]: karun_yz_bundle
+        },
+        "건륭기 카룬": {
+          [`${triSvg(dk_QL)}${triSvg(tk_QL)}변내/변외카룬(건륭중기)`]: karun_ql_bundle
+        },
+        "가경기 카룬": {
+          [`${triSvg(dk_JQ)}${triSvg(tk_JQ)}변내/변외카룬(가경 9년)`]: karun_jq_bundle
+        },
+        "가경기 위장카룬": {
+          [`${triSvg(JQWC)}성경위장 카룬(가경 23년)`]:  jq_weichang
+        },
+        "도광기 카룬": {
+          [`${triSvg(dk_DG)}${triSvg(tk_DG)}변내/변외카룬(도광 27년)`]: karun_dg_bundle
+        },
+        "참고자료_CHGIS (1820)": {
+          [`${lineSvg('#666')}省 경계선`]:  chgisprov_pgn,
+          [`${lineSvg('#999')}府 경계선`]:  chgispref_pgn,
+          [`${dotSvg('#000')}府 치소`]:     chgispref_pts,
+          [`${dotSvg('#000')}인문지명`]:    chgistwn_pts
+        }
       };
 
-L.control.groupedLayers(baseLayers, groupedOverlays, {
-  collapsed: false,
-  groupsCollapsible: false,
-  groupCheckboxes: true
-}).addTo(map);
+      L.control.groupedLayers(baseLayers, groupedOverlays, {
+        collapsed: false,
+        groupsCollapsible: false,
+        groupCheckboxes: true
+      }).addTo(map);
 
     })().catch(err => {
       console.error(err);
