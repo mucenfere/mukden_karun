@@ -156,19 +156,23 @@
 
     /* ── 라벨 토글 버튼 ── */
     .label-toggle-btn {
-      background: rgba(255,255,255,0.95);
-      border: 2px solid rgba(0,0,0,0.2);
+      display: block;
+      width: calc(100% - 0px);
+      background: #f0f0ee;
+      border: 1px solid #ccc;
       border-radius: 4px;
-      padding: 4px 8px;
+      padding: 5px 10px;
+      margin-bottom: 8px;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       color: #333;
       line-height: 1.4;
       white-space: nowrap;
+      text-align: center;
     }
-    .label-toggle-btn:hover { background: #f4f4f4; }
-    .label-toggle-btn.off { color: #aaa; }
+    .label-toggle-btn:hover { background: #e4e4e0; }
+    .label-toggle-btn.off { background: #fff; color: #aaa; border-color: #ddd; }
 
     /* info panel */
     .info-panel{
@@ -366,29 +370,31 @@
       });
     }
 
-    // ── 라벨 전체 토글 ──
+    // ── 라벨 전체 토글 (레이어 컨트롤 삽입용) ──
     let labelsVisible = true;
-    const LabelToggleControl = L.Control.extend({
-      onAdd(map) {
-        const btn = L.DomUtil.create('button', 'label-toggle-btn');
-        btn.textContent = '🏷 라벨 ON';
-        L.DomEvent.disableClickPropagation(btn);
-        btn.addEventListener('click', () => {
-          labelsVisible = !labelsVisible;
-          if (labelsVisible) {
-            map.getContainer().classList.remove('labels-hidden');
-            btn.textContent = '🏷 라벨 ON';
-            btn.classList.remove('off');
-          } else {
-            map.getContainer().classList.add('labels-hidden');
-            btn.textContent = '🏷 라벨 OFF';
-            btn.classList.add('off');
-          }
-        });
-        return btn;
-      }
-    });
-    new LabelToggleControl({ position: 'topleft' }).addTo(map);
+    function insertLabelToggle() {
+      const layerBox = document.querySelector('.leaflet-control-layers');
+      if (!layerBox) return;
+      // 이미 삽입됐으면 스킵
+      if (layerBox.querySelector('.label-toggle-btn')) return;
+      const btn = document.createElement('button');
+      btn.className = 'label-toggle-btn';
+      btn.textContent = '🏷 라벨 ON';
+      btn.addEventListener('click', () => {
+        labelsVisible = !labelsVisible;
+        if (labelsVisible) {
+          map.getContainer().classList.remove('labels-hidden');
+          btn.textContent = '🏷 라벨 ON';
+          btn.classList.remove('off');
+        } else {
+          map.getContainer().classList.add('labels-hidden');
+          btn.textContent = '🏷 라벨 OFF';
+          btn.classList.add('off');
+        }
+      });
+      // 레이어 컨트롤 맨 위에 삽입
+      layerBox.insertBefore(btn, layerBox.firstChild);
+    }
 
     // ── 범례 아이콘 헬퍼 ──
     function triSvg(color) {
@@ -606,6 +612,9 @@
         groupsCollapsible: false,
         groupCheckboxes: true
       }).addTo(map);
+
+      // 레이어 컨트롤 렌더링 후 라벨 토글 버튼 삽입
+      insertLabelToggle();
 
     })().catch(err => {
       console.error(err);
