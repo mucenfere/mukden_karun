@@ -23,18 +23,18 @@
 
     /* ── Top nav ── */
     .topnav {
-      position: fixed; top: 0; left: 0; right: 0; height: 44px;
+      position: fixed; top: 0; left: 0; right: 0; height: 57px;
       display: flex; gap: 48px; align-items: center; padding: 0 80px;
       background: rgba(255,255,255,0.95); z-index: 1000;
       border-bottom: 1px solid #ddd;
     }
-    .topnav a { text-decoration: none; color: #111; font-weight: 800; font-size: 16px; }
+    .topnav a { text-decoration: none; color: #111; font-weight: 800; font-size: 21px; }
     .topnav a:hover { text-decoration: underline; }
 
-    body { padding-top: 44px; }
-    main { max-width: 1400px; margin: 0 auto; padding: 28px 32px 60px; }
-    h1 { font-size: 22px; font-weight: 800; margin: 0 0 6px; }
-    .subtitle { color: #666; font-size: 15px; margin-bottom: 24px; }
+    body { padding-top: 57px; }
+    main { max-width: 1600px; margin: 0 auto; padding: 36px 42px 80px; }
+    h1 { font-size: 36px; font-weight: 800; margin: 0 0 8px; }
+    .subtitle { color: #666; font-size: 19px; margin-bottom: 31px; }
 
     /* ── Table wrap ── */
     .table-wrap { overflow-x: auto; }
@@ -42,21 +42,21 @@
     table {
       width: 100%; border-collapse: collapse;
       background: #fff; border: 1px solid #e0e0e0;
-      border-radius: 8px; overflow: hidden; font-size: 15px;
+      border-radius: 8px; overflow: hidden; font-size: 19px;
     }
 
     /* Column widths */
-    col.col-no     { width: 48px; }
+    col.col-no     { width: 62px; }
     col.col-thumb  { width: 210px; }
-    col.col-title  { width: 200px; }
-    col.col-date   { width: 120px; }
-    col.col-lang   { width: 60px; }
-    col.col-source { width: 180px; }
-    col.col-repo   { width: 240px; }
+    col.col-title  { width: 260px; }
+    col.col-date   { width: 156px; }
+    col.col-lang   { width: 78px; }
+    col.col-source { width: 234px; }
+    col.col-repo   { width: 312px; }
 
     thead th {
       background: #f0f0ee; text-align: left;
-      padding: 10px 12px; font-weight: 700; font-size: 15px;
+      padding: 13px 16px; font-weight: 700; font-size: 19px;
       border-bottom: 1px solid #ddd;
       border-right: 1px solid #ddd;
       white-space: nowrap;
@@ -70,7 +70,7 @@
     tbody tr:hover { background: #e8f0fe; }
 
     td {
-      padding: 9px 12px;
+      padding: 12px 16px;
       vertical-align: middle;
       border-right: 1px solid #e0e0e0;
     }
@@ -78,12 +78,12 @@
 
     /* No. column */
     td.col-no {
-      color: #bbb; font-size: 12px;
+      color: #bbb; font-size: 15px;
       text-align: center; white-space: nowrap;
     }
 
     /* Thumbnail */
-    td.col-thumb { padding: 10px 12px; text-align: center; }
+    td.col-thumb { padding: 13px 16px; text-align: center; }
 
     /* 썸네일 클릭 버튼 */
     .thumb-btn {
@@ -171,7 +171,7 @@
       position: absolute;
       top: -36px; right: 0;
       background: none; border: none;
-      color: #fff; font-size: 28px;
+      color: #fff; font-size: 36px;
       cursor: pointer; line-height: 1;
       opacity: 0.8;
     }
@@ -179,7 +179,7 @@
     .lightbox-caption {
       margin-top: 10px;
       color: #ddd;
-      font-size: 13px;
+      font-size: 17px;
       text-align: center;
     }
   </style>
