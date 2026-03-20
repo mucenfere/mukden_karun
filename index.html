@@ -55,8 +55,7 @@
       height: 14px;
       background: var(--tri, #d62728);
       clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-      border: 1.5px solid rgba(255,255,255,0.9);  /* 검정 → 흰색 */
-      filter: drop-shadow(0 0 2px rgba(0,0,0,0.8));  /* 외곽 검정 그림자 추가 */
+      border: 1px solid rgba(0,0,0,0.75);
       box-sizing: border-box;
       filter: drop-shadow(0 1px 1px rgba(255,255,255,0.8));
     }
@@ -75,7 +74,7 @@
       padding: 0;
       margin: 0;
       color: #000;
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 600;
       text-shadow: 0 0 2px #fff, 0 0 2px #fff;
     }
@@ -508,12 +507,12 @@
       });
 
       // 카룬 색상
-      const dk_KX = '#00A2FF'; const tk_KX = '#FFD400';
-      const dk_YZ = '#B000FF'; const tk_YZ = '#7CFF00';
-      const dk_QL = '#00E676'; const tk_QL = '#FF4DFF';
-      const dk_JQ = '#FF8C00'; const tk_JQ = '#00E5FF';
-      const JQWC  = '#005CFF';
-      const dk_DG = '#6A00FF'; const tk_DG = '#00FFC8';
+      const dk_KX = '#FF6600'; const tk_KX = '#FFE033';
+      const dk_YZ = '#FF40FF'; const tk_YZ = '#AAFF00';
+      const dk_QL = '#CCFF00'; const tk_QL = '#FF66FF';
+      const dk_JQ = '#FFAA00'; const tk_JQ = '#FFE033';
+      const JQWC  = '#4D8EFF';
+      const dk_DG = '#9933FF'; const tk_DG = '#FF9EFF';
 
       // 카룬 레이어
       const kx_tai     = makeKarunLayer(karunAll, { time: '강희말기', ztype: 'tai',     color: dk_KX });
