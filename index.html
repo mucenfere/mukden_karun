@@ -174,6 +174,20 @@
     .label-toggle-btn:hover { background: #e4e4e0; }
     .label-toggle-btn.off { background: #fff; color: #aaa; border-color: #ddd; }
 
+    /* ── 고정 라벨 (라벨 토글 무관) ── */
+    .leaflet-tooltip.fixed-label {
+      background: rgba(255,255,255,0.6);
+      border: none;
+      box-shadow: none;
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: #111;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .leaflet-tooltip.fixed-label:before { display: none !important; }
+
     /* info panel */
     .info-panel{
       position: fixed;
@@ -617,6 +631,17 @@
       // 레이어 컨트롤 렌더링 후 라벨 토글 버튼 삽입 (초기 OFF)
       map.getContainer().classList.add('labels-hidden');
       insertLabelToggle();
+
+      // ── 고정 라벨 (라벨 ON/OFF 무관, 항상 표시) ──
+L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label', opacity: 1 })
+  .setContent('盛京圍場')
+  .setLatLng([42 + 41/60, 125 + 0/60])
+  .addTo(map);
+
+L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label', opacity: 1 })
+  .setContent('額爾敏/哈爾敏蔘場')
+  .setLatLng([42 + 5/60, 126 + 13/60])
+  .addTo(map);
 
     })().catch(err => {
       console.error(err);
