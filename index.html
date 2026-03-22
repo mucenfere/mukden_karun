@@ -191,7 +191,24 @@
          1px  1px 0 rgba(0,0,0,0.6);
     }
     .leaflet-tooltip.fixed-label:before { display: none !important; }
+    .leaflet-tooltip.fixed-label-sm {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      white-space: nowrap;
+      text-shadow:
+        -1px -1px 0 rgba(0,0,0,0.6),
+         1px -1px 0 rgba(0,0,0,0.6),
+        -1px  1px 0 rgba(0,0,0,0.6),
+         1px  1px 0 rgba(0,0,0,0.6);
+    }
+    .leaflet-tooltip.fixed-label-sm:before { display: none !important; }
 
+    
     /* info panel */
     .info-panel{
       position: fixed;
@@ -642,7 +659,7 @@ L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label', opac
   .setLatLng([42 + 40/60, 125 + 15/60])
   .addTo(map);
 
-L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label', opacity: 0.4 })
+L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.4 })
   .setContent('額爾敏/哈爾敏蔘場')
   .setLatLng([42 + 0/60, 126 + 8/60])
   .addTo(map);
