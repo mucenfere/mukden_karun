@@ -184,13 +184,10 @@
       font-size: 20px;
       font-weight: 600;
       white-space: nowrap;
-      text-shadow:
-        -1px -1px 0 rgba(0,0,0,0.6),
-         1px -1px 0 rgba(0,0,0,0.6),
-        -1px  1px 0 rgba(0,0,0,0.6),
-         1px  1px 0 rgba(0,0,0,0.6);
+      text-shadow: none;
     }
     .leaflet-tooltip.fixed-label:before { display: none !important; }
+
     .leaflet-tooltip.fixed-label-sm {
       background: transparent;
       border: none;
@@ -201,15 +198,10 @@
       font-weight: 600;
       white-space: nowrap;
       text-align: center;
-      text-shadow:
-        -1px -1px 0 rgba(0,0,0,0.6),
-         1px -1px 0 rgba(0,0,0,0.6),
-        -1px  1px 0 rgba(0,0,0,0.6),
-         1px  1px 0 rgba(0,0,0,0.6);
+      text-shadow: none;
     }
     .leaflet-tooltip.fixed-label-sm:before { display: none !important; }
 
-    
     /* info panel */
     .info-panel{
       position: fixed;
@@ -412,7 +404,6 @@
     function insertLabelToggle() {
       const layerBox = document.querySelector('.leaflet-control-layers');
       if (!layerBox) return;
-      // 이미 삽입됐으면 스킵
       if (layerBox.querySelector('.label-toggle-btn')) return;
       const btn = document.createElement('button');
       btn.className = 'label-toggle-btn off';
@@ -429,7 +420,6 @@
           btn.classList.add('off');
         }
       });
-      // 레이어 컨트롤 맨 위에 삽입
       layerBox.insertBefore(btn, layerBox.firstChild);
     }
 
@@ -443,10 +433,6 @@
     function lineSvg(color) {
       return `<span class="legend-line" style="background:${color};"></span>`;
     }
-    // 두 색 삼각형 쌍 (변내+변외)
-    function triPair(c1, c2) {
-      return `${triSvg(c1)}${triSvg(c2)}`;
-    }
 
     (async () => {
 
@@ -458,13 +444,11 @@
 
       const karunAll = await fetchGeoJSON('./data/karun_all.geojson');
 
-      // 국경선
       const bordersWhite = await loadGeoJSON('./data/borders.geojson', {
         style: { color: '#ffffff', weight: 1.8, opacity: 0.5 }
       });
       const bordersLayer = L.layerGroup([bordersWhite]).addTo(map);
 
-      // CHGIS
       const chgisprov_pgn = await loadGeoJSON('./data/v6_1820_prov_pgn.geojson', { style: { weight: 2, fillOpacity: 0.1 }});
       const chgispref_pgn = await loadGeoJSON('./data/v6_1820_pref_pgn.geojson', { style: { weight: 2, fillOpacity: 0.1 }});
       const chgispref_pts = await loadGeoJSON('./data/v6_1820_pref_pts.geojson', {
@@ -480,7 +464,6 @@
         })
       });
 
-      // 아이콘
       const icon_wp_gate = L.icon({
         iconUrl: './data/img/willowgateicon.png',
         iconSize: [10, 10], iconAnchor: [9, 9], popupAnchor: [0, -9]
@@ -490,7 +473,6 @@
         iconSize: [10, 10], iconAnchor: [9, 9], popupAnchor: [0, -9]
       });
 
-      // 카룬 zone 분류
       function zoneType(zoneStr){
         const z = String(zoneStr || '').toLowerCase();
         if (z.includes('변대') || z.includes(' tai')) return 'tai';
@@ -500,7 +482,6 @@
         return 'unknown';
       }
 
-      // 삼각형 아이콘
       const mkTriIcon = (color, size = 10) => L.divIcon({
         className: '',
         html: `<div class="tri" style="--tri:${color}; width:${size}px; height:${size}px;"></div>`,
@@ -542,7 +523,6 @@
         pointToLayer: (f, latlng) => L.marker(latlng, { icon })
       });
 
-      // 카룬 색상
       const dk_KX = '#FF6600'; const tk_KX = '#FFE033';
       const dk_YZ = '#FF40FF'; const tk_YZ = '#AAFF00';
       const dk_QL = '#CCFF00'; const tk_QL = '#FF66FF';
@@ -550,7 +530,6 @@
       const JQWC  = '#4D8EFF';
       const dk_DG = '#9933FF'; const tk_DG = '#FF9EFF';
 
-      // 카룬 레이어
       const kx_tai     = makeKarunLayer(karunAll, { time: '강희말기', ztype: 'tai',     color: dk_KX });
       kx_tai.addTo(map);
       const kx_tulergi = makeKarunLayer(karunAll, { time: '강희말기', ztype: 'tulergi', color: tk_KX });
@@ -574,7 +553,6 @@
       const dg_tulergi = makeKarunLayer(karunAll, { time: '도광27년', ztype: 'tulergi', color: tk_DG });
       const karun_dg_bundle = L.layerGroup([dg_dorgi, dg_tulergi]);
 
-      // 행정경계·역참
       const admin_v1 = await loadGeoJSON('./data/admin_lv1_line.geojson', {
         style: { color: '#000000', weight: 4, opacity: 0.8 }
       });
@@ -604,7 +582,6 @@
       const wp_gate_ql_pts = await loadGeoJSON('./data/willowpalisade_gate_ql.geojson',  mkIconPt(icon_wp_gate));
       const wpqianlong_bundle = L.layerGroup([wpqianlong, wp_gate_ql_pts]);
 
-      // ── 레이어 컨트롤 (범례 아이콘 포함) ──
       const groupedOverlays = {
         "기본지리정보": {
           [`${lineSvg('#000')}성경장군 관할 경계선`]:   admin_v1,
@@ -650,25 +627,24 @@
         groupCheckboxes: true
       }).addTo(map);
 
-      // 레이어 컨트롤 렌더링 후 라벨 토글 버튼 삽입 (초기 OFF)
       map.getContainer().classList.add('labels-hidden');
       insertLabelToggle();
 
-      // ── 고정 라벨 (라벨 ON/OFF 무관, 항상 표시) ──
-L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label', opacity: 0.5 })
-  .setContent('盛京圍場')
-  .setLatLng([42 + 40/60, 125 + 15/60])
-  .addTo(map);
+      // ── 고정 라벨 ──
+      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label', opacity: 0.5 })
+        .setContent('盛京圍場')
+        .setLatLng([42 + 40/60, 125 + 15/60])
+        .addTo(map);
 
-L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label', opacity: 0.5 })
-  .setContent('吉林圍場')
-  .setLatLng([43 + 10/60, 126 + 15/60])
-  .addTo(map);
-      
-L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.5 })
-  .setContent('額爾敏/哈爾敏<br>  蔘場')
-  .setLatLng([42 + 0/60, 126 + 8/60])
-  .addTo(map);
+      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label', opacity: 0.5 })
+        .setContent('吉林圍場')
+        .setLatLng([43 + 10/60, 126 + 15/60])
+        .addTo(map);
+
+      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.5 })
+        .setContent('額爾敏/哈爾敏<br>  蔘場')
+        .setLatLng([42 + 0/60, 126 + 8/60])
+        .addTo(map);
 
     })().catch(err => {
       console.error(err);
