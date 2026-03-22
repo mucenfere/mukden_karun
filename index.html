@@ -642,10 +642,15 @@
         .addTo(map);
 
       L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.5 })
-        .setContent('額爾敏/哈爾敏<br>  蔘場')
+        .setContent('額爾敏/哈爾敏<br>蔘場')
         .setLatLng([42 + 0/60, 126 + 8/60])
         .addTo(map);
 
+      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.5 })
+        .setContent('養息牧<br>牧場')
+        .setLatLng([42 + 25/60, 122 + 10/60])
+        .addTo(map);
+      
     })().catch(err => {
       console.error(err);
       alert(err.message || err);
