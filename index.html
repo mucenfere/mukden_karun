@@ -472,10 +472,6 @@
         iconUrl: './data/img/giyamunicon.png',
         iconSize: [10, 10], iconAnchor: [9, 9], popupAnchor: [0, -9]
       });
-      const icon_castle = L.icon({
-        iconUrl: './data/img/castle_grey.png',
-        iconSize: [12, 8], iconAnchor: [9, 13], popupAnchor: [0, -13]
-      });
 
       function zoneType(zoneStr){
         const z = String(zoneStr || '').toLowerCase();
@@ -565,7 +561,7 @@
       const admin_pts = await loadGeoJSON('./data/manchu_admin_pt.geojson', {
         label: true,
         pointToLayer: (feature, latlng) => {
-          const marker = L.marker(latlng, { icon: icon_castle });
+          const marker = L.marker(latlng, { icon: icon_admin });
           oms.addMarker(marker);
           return marker;
         }
