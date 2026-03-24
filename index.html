@@ -40,7 +40,6 @@
     }
     .topnav a{ text-decoration:none; color:#111; font-weight:600; }
 
-    /* lv1, lv2: 아이콘 */
     .admin-dot{
       width: 6px; height: 6px;
       border-radius: 50%;
@@ -49,15 +48,14 @@
       box-shadow: none;
     }
 
-    /* 삼각형 라벨 */
     .tri {
       width: 14px;
       height: 14px;
       background: var(--tri, #d62728);
       clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-      border: 1px solid rgba(0,0,0,0.75);
+      border: 1.5px solid rgba(255,255,255,0.9);
       box-sizing: border-box;
-      filter: drop-shadow(0 1px 1px rgba(255,255,255,0.8));
+      filter: drop-shadow(0 0 2px rgba(0,0,0,0.8));
     }
 
     #map{
@@ -66,7 +64,6 @@
       margin-top: 44px;
     }
 
-    /* Tooltip labels */
     .leaflet-tooltip.plain-label{
       background: transparent;
       border: none;
@@ -80,10 +77,8 @@
     }
     .leaflet-tooltip.plain-label:before{ display: none !important; }
 
-    /* 라벨 숨김 */
     .labels-hidden .leaflet-tooltip.plain-label { display: none !important; }
 
-    /* Make layers control scroll internally */
     .leaflet-control-layers{
       max-height: calc(100vh - 60px);
       overflow: hidden;
@@ -94,25 +89,19 @@
       overflow-x: hidden;
       padding-right: 6px;
     }
-
     .leaflet-control-layers {
       max-height: calc(100vh - 60px);
       overflow: hidden;
       min-width: 200px;
     }
 
-    /* 그룹명 행: 들여쓰기 없음 */
     .leaflet-control-layers-group-label {
       padding-left: 0 !important;
     }
-
-    /* 하위 레이어: 들여쓰기 */
     .leaflet-control-layers-group label:not(.leaflet-control-layers-group-label) {
       padding-left: 16px;
       display: block;
     }
-
-    /* 그룹명 폰트 */
     .leaflet-control-layers-group-name {
       font-size: 14px;
       font-weight: 600;
@@ -122,7 +111,6 @@
       padding-left: 0;
     }
 
-    /* ── 범례 아이콘 (레이어 컨트롤 내부) ── */
     .legend-tri {
       display: inline-block;
       width: 10px; height: 10px;
@@ -147,17 +135,15 @@
       border-radius: 2px;
       flex-shrink: 0;
     }
-    /* 레이어 이름 행 flex 정렬 */
     .leaflet-control-layers-overlays label span,
     .leaflet-control-layers-overlays label {
       display: flex !important;
       align-items: center;
     }
 
-    /* ── 라벨 토글 버튼 ── */
     .label-toggle-btn {
       display: block;
-      width: calc(100% - 0px);
+      width: 100%;
       background: #f0f0ee;
       border: 1px solid #ccc;
       border-radius: 4px;
@@ -168,7 +154,7 @@
       cursor: pointer;
       color: #333;
       line-height: 1.4;
-      white-space: normal;
+      white-space: nowrap;
       text-align: center;
     }
     .label-toggle-btn:hover { background: #e4e4e0; }
@@ -181,10 +167,14 @@
       box-shadow: none;
       padding: 0;
       color: #ffffff;
-      font-size: 20px;
-      font-weight: 600;
+      font-size: 15px;
+      font-weight: 800;
       white-space: nowrap;
-      text-shadow: none;
+      text-shadow:
+        -1px -1px 0 rgba(0,0,0,0.8),
+         1px -1px 0 rgba(0,0,0,0.8),
+        -1px  1px 0 rgba(0,0,0,0.8),
+         1px  1px 0 rgba(0,0,0,0.8);
     }
     .leaflet-tooltip.fixed-label:before { display: none !important; }
 
@@ -194,11 +184,15 @@
       box-shadow: none;
       padding: 0;
       color: #ffffff;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 600;
-      white-space: nowrap;
+      white-space: normal;
       text-align: center;
-      text-shadow: none;
+      text-shadow:
+        -1px -1px 0 rgba(0,0,0,0.6),
+         1px -1px 0 rgba(0,0,0,0.6),
+        -1px  1px 0 rgba(0,0,0,0.6),
+         1px  1px 0 rgba(0,0,0,0.6);
     }
     .leaflet-tooltip.fixed-label-sm:before { display: none !important; }
 
@@ -370,10 +364,8 @@
     satellite.addTo(map);
     const baseLayers = { "위성": satellite, "OSM": osm };
 
-    // ── Styles ──
     const willowpalisade = { color: '#d60000', weight: 2, opacity: 1 };
 
-    // ── GeoJSON loader ──
     async function loadGeoJSON(url, options = {}) {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`Failed to fetch ${url} (HTTP ${res.status})`);
@@ -399,7 +391,7 @@
       });
     }
 
-    // ── 라벨 전체 토글 (레이어 컨트롤 삽입용) ──
+    // ── 라벨 전체 토글 ──
     let labelsVisible = false;
     function insertLabelToggle() {
       const layerBox = document.querySelector('.leaflet-control-layers');
@@ -473,6 +465,13 @@
         iconSize: [10, 10], iconAnchor: [9, 9], popupAnchor: [0, -9]
       });
 
+      const icon_castle = L.icon({
+        iconUrl: './data/img/castle_png.png',
+        iconSize: [18, 13],
+        iconAnchor: [9, 13],
+        popupAnchor: [0, -13]
+      });
+
       function zoneType(zoneStr){
         const z = String(zoneStr || '').toLowerCase();
         if (z.includes('변대') || z.includes(' tai')) return 'tai';
@@ -523,6 +522,7 @@
         pointToLayer: (f, latlng) => L.marker(latlng, { icon })
       });
 
+      // 카룬 색상
       const dk_KX = '#FF6600'; const tk_KX = '#FFE033';
       const dk_YZ = '#FF40FF'; const tk_YZ = '#AAFF00';
       const dk_QL = '#CCFF00'; const tk_QL = '#FF66FF';
@@ -561,7 +561,7 @@
       const admin_pts = await loadGeoJSON('./data/manchu_admin_pt.geojson', {
         label: true,
         pointToLayer: (feature, latlng) => {
-          const marker = L.marker(latlng, { icon: icon_admin });
+          const marker = L.marker(latlng, { icon: icon_castle });
           oms.addMarker(marker);
           return marker;
         }
@@ -573,30 +573,30 @@
       );
       giyamun_pt.addTo(map);
 
-      const wpkangxi     = await loadGeoJSON('./data/willowpalisade-kangxi.geojson',   { style: willowpalisade });
+      const wpkangxi       = await loadGeoJSON('./data/willowpalisade-kangxi.geojson',    { style: willowpalisade });
       const wp_gate_kx_pts = await loadGeoJSON('./data/willowpalisade_gate_kxyz.geojson', mkIconPt(icon_wp_gate));
       const wpkangxi_bundle = L.layerGroup([wpkangxi, wp_gate_kx_pts]);
       wpkangxi_bundle.addTo(map);
 
-      const wpqianlong    = await loadGeoJSON('./data/willowpalisade-qianlong.geojson', { style: willowpalisade });
-      const wp_gate_ql_pts = await loadGeoJSON('./data/willowpalisade_gate_ql.geojson',  mkIconPt(icon_wp_gate));
+      const wpqianlong     = await loadGeoJSON('./data/willowpalisade-qianlong.geojson',  { style: willowpalisade });
+      const wp_gate_ql_pts = await loadGeoJSON('./data/willowpalisade_gate_ql.geojson',   mkIconPt(icon_wp_gate));
       const wpqianlong_bundle = L.layerGroup([wpqianlong, wp_gate_ql_pts]);
 
       const groupedOverlays = {
         "기본지리정보": {
-          [`${lineSvg('#000')}성경장군 관할 경계선`]:   admin_v1,
-          [`${dotSvg('#004eff')}행정 지명(lv1/lv2)`]:  admin_pts,
-          [`${dotSvg('#888')}역참`]:                    giyamun_pt
+          [`${lineSvg('#000')}성경장군 관할 경계선`]:  admin_v1,
+          [`${dotSvg('#004eff')}행정 지명(lv1/lv2)`]: admin_pts,
+          [`${dotSvg('#888')}역참`]:                   giyamun_pt
         },
         "유조변": {
-          [`${lineSvg('#d60000')}유조변(강희-옹정)`]:   wpkangxi_bundle,
-          [`${lineSvg('#d60000')}유조변(건륭이후)`]:    wpqianlong_bundle
+          [`${lineSvg('#d60000')}유조변(강희-옹정)`]:  wpkangxi_bundle,
+          [`${lineSvg('#d60000')}유조변(건륭이후)`]:   wpqianlong_bundle
         },
         "邊臺": {
-          [`${triSvg(dk_KX)}邊臺(강희기 이후)`]:        kx_tai
+          [`${triSvg(dk_KX)}邊臺(강희기 이후)`]:       kx_tai
         },
         "강희기 카룬": {
-          [`${triSvg(tk_KX)}변외카룬(강희말기)`]:       kx_tulergi
+          [`${triSvg(tk_KX)}변외카룬(강희말기)`]:      kx_tulergi
         },
         "옹정기 카룬": {
           [`${triSvg(dk_YZ)}${triSvg(tk_YZ)}변내/변외카룬(옹정초기)`]: karun_yz_bundle
@@ -608,16 +608,16 @@
           [`${triSvg(dk_JQ)}${triSvg(tk_JQ)}변내/변외카룬(가경 9년)`]: karun_jq_bundle
         },
         "가경기 위장카룬": {
-          [`${triSvg(JQWC)}성경위장 카룬(가경 23년)`]:  jq_weichang
+          [`${triSvg(JQWC)}성경위장 카룬(가경 23년)`]: jq_weichang
         },
         "도광기 카룬": {
           [`${triSvg(dk_DG)}${triSvg(tk_DG)}변내/변외카룬(도광 27년)`]: karun_dg_bundle
         },
         "참고자료_CHGIS (1820)": {
-          [`${lineSvg('#666')}省 경계선`]:  chgisprov_pgn,
-          [`${lineSvg('#999')}府 경계선`]:  chgispref_pgn,
-          [`${dotSvg('#000')}府 치소`]:     chgispref_pts,
-          [`${dotSvg('#000')}인문지명`]:    chgistwn_pts
+          [`${lineSvg('#666')}省 경계선`]: chgisprov_pgn,
+          [`${lineSvg('#999')}府 경계선`]: chgispref_pgn,
+          [`${dotSvg('#000')}府 치소`]:    chgispref_pts,
+          [`${dotSvg('#000')}인문지명`]:   chgistwn_pts
         }
       };
 
@@ -630,27 +630,17 @@
       map.getContainer().classList.add('labels-hidden');
       insertLabelToggle();
 
-      // ── 고정 라벨 ──
-      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.5 })
+      // ── 고정 라벨 (라벨 ON/OFF 무관, 항상 표시) ──
+      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label', opacity: 0.4 })
         .setContent('盛京圍場')
-        .setLatLng([42 + 40/60, 125 + 15/60])
+        .setLatLng([42 + 30/60, 125 + 15/60])
         .addTo(map);
 
-      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.5 })
-        .setContent('吉林圍場')
-        .setLatLng([43 + 10/60, 126 + 17/60])
+      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.4 })
+        .setContent('額爾敏/哈爾敏蔘場')
+        .setLatLng([42 + 0/60, 126 + 8/60])
         .addTo(map);
 
-      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.5 })
-        .setContent('額爾敏/哈爾敏<br>蔘場')
-        .setLatLng([41 + 55/60, 126 + 8/60])
-        .addTo(map);
-
-      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.5 })
-        .setContent('養息牧<br>牧場')
-        .setLatLng([42 + 30/60, 122 + 14/60])
-        .addTo(map);
-      
     })().catch(err => {
       console.error(err);
       alert(err.message || err);
