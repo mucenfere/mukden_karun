@@ -80,10 +80,8 @@
     }
     .leaflet-tooltip.plain-label:before{ display: none !important; }
 
-    /* 라벨 숨김 */
     .labels-hidden .leaflet-tooltip.plain-label { display: none !important; }
 
-    /* Make layers control scroll internally */
     .leaflet-control-layers{
       max-height: calc(100vh - 60px);
       overflow: hidden;
@@ -101,12 +99,10 @@
       min-width: 200px;
     }
 
-    /* 그룹명 행: 들여쓰기 없음 */
     .leaflet-control-layers-group-label {
       padding-left: 0 !important;
     }
 
-    /* 하위 레이어: 들여쓰기 */
     .leaflet-control-layers-group label:not(.leaflet-control-layers-group-label) {
       padding-left: 16px;
       display: block;
@@ -122,7 +118,6 @@
       padding-left: 0;
     }
 
-    /* ── 범례 아이콘 (레이어 컨트롤 내부) ── */
     .legend-tri {
       display: inline-block;
       width: 10px; height: 10px;
@@ -147,14 +142,13 @@
       border-radius: 2px;
       flex-shrink: 0;
     }
-    /* 레이어 이름 행 flex 정렬 */
+
     .leaflet-control-layers-overlays label span,
     .leaflet-control-layers-overlays label {
       display: flex !important;
       align-items: center;
     }
 
-    /* ── 라벨 토글 버튼 ── */
     .label-toggle-btn {
       display: block;
       width: calc(100% - 0px);
@@ -174,7 +168,6 @@
     .label-toggle-btn:hover { background: #e4e4e0; }
     .label-toggle-btn.off { background: #fff; color: #aaa; border-color: #ddd; }
 
-    /* ── 고정 라벨 (라벨 토글 무관) ── */
     .leaflet-tooltip.fixed-label {
       background: transparent;
       border: none;
@@ -403,7 +396,6 @@
       });
     }
 
-    // ── 라벨 전체 토글 (레이어 컨트롤 삽입용) ──
     let labelsVisible = false;
     function insertLabelToggle() {
       const layerBox = document.querySelector('.leaflet-control-layers');
@@ -427,7 +419,6 @@
       layerBox.insertBefore(btn, layerBox.firstChild);
     }
 
-    // ── 범례 아이콘 헬퍼 ──
     function triSvg(color) {
       return `<span class="legend-tri" style="background:${color};"></span>`;
     }
