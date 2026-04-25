@@ -396,14 +396,14 @@
       });
     }
 
-    let labelsVisible = false;
+    let labelsVisible = true;
     function insertLabelToggle() {
       const layerBox = document.querySelector('.leaflet-control-layers');
       if (!layerBox) return;
       if (layerBox.querySelector('.label-toggle-btn')) return;
       const btn = document.createElement('button');
-      btn.className = 'label-toggle-btn off';
-      btn.textContent = '🏷 라벨 OFF';
+      btn.className = 'label-toggle-btn';
+      btn.textContent = '🏷 라벨 ON';
       btn.addEventListener('click', () => {
         labelsVisible = !labelsVisible;
         if (labelsVisible) {
@@ -411,7 +411,6 @@
           btn.textContent = '🏷 라벨 ON';
           btn.classList.remove('off');
         } else {
-          map.getContainer().classList.add('labels-hidden');
           btn.textContent = '🏷 라벨 OFF';
           btn.classList.add('off');
         }
@@ -621,8 +620,7 @@
         groupsCollapsible: false,
         groupCheckboxes: true
       }).addTo(map);
-
-      map.getContainer().classList.add('labels-hidden');
+      
       insertLabelToggle();
 
       // ── 고정 라벨 ──
