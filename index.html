@@ -628,15 +628,25 @@
 
       insertLabelToggle();
 
-      // ── 고정 라벨 (라벨 ON/OFF 무관, 항상 표시) ──
-      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label', opacity: 0.4 })
+      // ── 고정 라벨 ──
+      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.5 })
         .setContent('盛京圍場')
-        .setLatLng([42 + 30/60, 125 + 15/60])
+        .setLatLng([42 + 40/60, 125 + 15/60])
         .addTo(map);
 
-      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.4 })
-        .setContent('額爾敏/哈爾敏蔘場')
-        .setLatLng([42 + 0/60, 126 + 8/60])
+      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.5 })
+        .setContent('吉林圍場')
+        .setLatLng([43 + 10/60, 126 + 17/60])
+        .addTo(map);
+
+      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.5 })
+        .setContent('額爾敏/哈爾敏<br>蔘場')
+        .setLatLng([41 + 55/60, 126 + 8/60])
+        .addTo(map);
+
+      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.5 })
+        .setContent('養息牧<br>牧場')
+        .setLatLng([42 + 30/60, 122 + 14/60])
         .addTo(map);
 
     })().catch(err => {
