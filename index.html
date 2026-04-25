@@ -204,7 +204,7 @@
       color: #ffffff;
       font-size: 15px;
       font-weight: 600;
-      white-space: normal;
+      white-space: pre;
       text-align: center;
       text-shadow:
         -1px -1px 0 rgba(0,0,0,0.6),
@@ -591,12 +591,12 @@
       giyamun_pt.addTo(map);
 
       const wpkangxi       = await loadGeoJSON('./data/willowpalisade-kangxi.geojson',    { style: willowpalisade });
-      const wp_gate_kx_pts = await loadGeoJSON('./data/willowpalisade_gate_kxyz.geojson', mkIconPt(icon_wp_gate));
+      const wp_gate_kx_pts = await loadGeoJSON('./data/willowpalisade_gate_kxyz.geojson', mkIconPt(icon_wp_gate, { label: true }));
       const wpkangxi_bundle = L.layerGroup([wpkangxi, wp_gate_kx_pts]);
       wpkangxi_bundle.addTo(map);
 
       const wpqianlong     = await loadGeoJSON('./data/willowpalisade-qianlong.geojson',  { style: willowpalisade });
-      const wp_gate_ql_pts = await loadGeoJSON('./data/willowpalisade_gate_ql.geojson',   mkIconPt(icon_wp_gate));
+      const wp_gate_ql_pts = await loadGeoJSON('./data/willowpalisade_gate_ql.geojson',   mkIconPt(icon_wp_gate, { label: true }));
       const wpqianlong_bundle = L.layerGroup([wpqianlong, wp_gate_ql_pts]);
 
       const groupedOverlays = {
