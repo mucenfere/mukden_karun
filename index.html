@@ -560,7 +560,7 @@
       const admin_pts = await loadGeoJSON('./data/manchu_admin_pt.geojson', {
         label: true,
         pointToLayer: (feature, latlng) => {
-          const marker = L.marker(latlng, { icon: icon_castle });
+          const marker = L.marker(latlng, { icon: icon_admin });
           oms.addMarker(marker);
           return marker;
         }
