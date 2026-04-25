@@ -186,7 +186,7 @@
       color: #ffffff;
       font-size: 15px;
       font-weight: 600;
-      white-space: normal;
+      white-space: nowrap;
       text-align: center;
       text-shadow:
         -1px -1px 0 rgba(0,0,0,0.6),
@@ -195,6 +195,24 @@
          1px  1px 0 rgba(0,0,0,0.6);
     }
     .leaflet-tooltip.fixed-label-sm:before { display: none !important; }
+
+    .leaflet-tooltip.fixed-label-wrap {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      white-space: normal;
+      text-align: center;
+      text-shadow:
+        -1px -1px 0 rgba(0,0,0,0.6),
+         1px -1px 0 rgba(0,0,0,0.6),
+        -1px  1px 0 rgba(0,0,0,0.6),
+         1px  1px 0 rgba(0,0,0,0.6);
+    }
+    .leaflet-tooltip.fixed-label-wrap:before { display: none !important; }
 
     /* info panel */
     .info-panel{
@@ -639,12 +657,12 @@
         .setLatLng([43 + 10/60, 126 + 17/60])
         .addTo(map);
 
-      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.5 })
+      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-wrap', opacity: 0.5 })
         .setContent('額爾敏/哈爾敏<br>蔘場')
         .setLatLng([41 + 55/60, 126 + 8/60])
         .addTo(map);
 
-      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-sm', opacity: 0.5 })
+      L.tooltip({ permanent: true, direction: 'center', className: 'fixed-label-wrap', opacity: 0.5 })
         .setContent('養息牧<br>牧場')
         .setLatLng([42 + 30/60, 122 + 14/60])
         .addTo(map);
